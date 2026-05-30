@@ -243,7 +243,7 @@ header {
 main {
     flex: 1;
     width: 100%;
-    max-width: 1100px;
+    max-width: 1350px;
     margin: 0 auto;
     padding: 1.5rem;
     position: relative;
@@ -455,7 +455,7 @@ main {
 
 .inner-room-svg {
     width: 100%;
-    max-height: 480px; /* Phóng to căn phòng 1.4x để lấp đầy 2 khoảng trống và mở rộng đều trên màn hình lớn */
+    max-height: 600px; /* Phóng to căn phòng tối đa lấp đầy chiều rộng viền vàng trên màn hình lớn */
 }
 
 /* --- BẢNG ĐIỀU KHIỂN AI NẰM NGANG (ĐƯỜNG VIỀN MÀU ĐỎ - Red box) --- */
@@ -583,7 +583,7 @@ main {
     line-height: 1.45;
     color: var(--text-main);
     position: relative;
-    max-height: 75px;
+    max-height: 120px;
     overflow-y: auto;
 }
 
