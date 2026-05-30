@@ -1,0 +1,749 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>AI Smart Home - Game Giáo Dục Trải Nghiệm & Lập Trình AI</title>
+    <meta name="description" content="Trò chơi mini game tương tác giáo dục học sinh về cách thức hoạt động và lập trình Trí tuệ Nhân tạo (AI) ứng dụng vào nhà thông minh Smart Home.">
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+    <div class="star-bg"></div>
+
+    <!-- HEADER CHÍNH -->
+    <header>
+        <div class="logo-container">
+            <div class="logo-icon">
+                <!-- Smart Home AI icon -->
+                <svg viewBox="0 0 24 24">
+                    <path d="M12 3L2 12h3v8h14v-8h3L12 3zm0 5a3 3 0 0 1 3 3c0 1.66-1.34 3-3 3s-3-1.34-3-3a3 3 0 0 1 3-3zm-5 10v-6a5 5 0 0 1 10 0v6H7z"/>
+                </svg>
+            </div>
+            <div class="logo-text">
+                <h1>AI Smart Home</h1>
+                <span>Kịch bản & Lập trình AI</span>
+            </div>
+        </div>
+
+        <!-- Trình hiển thị tiến độ 2 Giai đoạn -->
+        <div class="game-steps">
+            <div class="step-indicator active" id="step-indicator-1">
+                <span class="num">1</span> Khám Phá AI
+            </div>
+            <div class="step-arrow">&gt;</div>
+            <div class="step-indicator" id="step-indicator-2">
+                <span class="num">2</span> Lập Trình AI Mới
+            </div>
+        </div>
+
+        <!-- Nút điều khiển chung trên Header -->
+        <div class="header-actions">
+            <button class="btn-header" id="btn-sound-toggle">
+                <svg width="18" height="18" fill="currentColor" viewBox="0 0 24 24" id="sound-icon">
+                    <path d="M3 9v6h4l5 5V4L7 9H3zm13.5 3c0-1.77-1.02-3.29-2.5-4.03v8.05c1.48-.73 2.5-2.25 2.5-4.02zM14 3.23v2.06c2.89.86 5 3.54 5 6.71s-2.11 5.85-5 6.71v2.06c4.01-.91 7-4.49 7-8.77s-2.99-7.86-7-8.77z"/>
+                </svg>
+                <span id="sound-text">Âm thanh: Bật</span>
+            </button>
+            <button class="btn-header accent" id="btn-restart-app">Chơi lại từ đầu</button>
+        </div>
+    </header>
+
+    <!-- KHU VỰC NỘI DUNG CHÍNH -->
+    <main>
+        
+        <!-- MÀN HÌNH BẮT ĐẦU (INTRO SCREEN) -->
+        <section id="intro-screen" class="screen-container active">
+            <div class="intro-content">
+                <div class="intro-title">
+                    <h2>Ứng Dụng AI Vào Đời Sống</h2>
+                    <p>Khám phá cách Trí tuệ Nhân tạo phân tích ngôn ngữ hàng ngày để vận hành một ngôi nhà thông minh Smart Home, và tự tay lập trình bộ não cho một AI mới tinh theo cách của riêng bạn!</p>
+                </div>
+
+                <!-- BIỆT THỰ THÔNG MINH SVG BÊN NGOÀI -->
+                <div class="exterior-house-wrapper" id="btn-enter-house" title="Ấn vào cánh cửa để bước vào nhà!">
+                    <svg class="exterior-house-svg" viewBox="0 0 600 400" xmlns="http://www.w3.org/2000/svg">
+                        <defs>
+                            <!-- Bầu trời Gradient -->
+                            <linearGradient id="skyGrad" x1="0%" y1="0%" x2="0%" y2="100%">
+                                <stop offset="0%" stop-color="#f1f5f9"/>
+                                <stop offset="100%" stop-color="#cbd5e1"/>
+                            </linearGradient>
+                            <linearGradient id="roofGrad" x1="0%" y1="0%" x2="100%" y2="0%">
+                                <stop offset="0%" stop-color="#334155"/>
+                                <stop offset="100%" stop-color="#1e293b"/>
+                            </linearGradient>
+                            <linearGradient id="wallGrad" x1="0%" y1="0%" x2="0%" y2="100%">
+                                <stop offset="0%" stop-color="#ffffff"/>
+                                <stop offset="100%" stop-color="#e2e8f0"/>
+                            </linearGradient>
+                            <linearGradient id="doorGrad" x1="0%" y1="0%" x2="100%" y2="0%">
+                                <stop offset="0%" stop-color="#a1887f"/>
+                                <stop offset="100%" stop-color="#7d5236"/>
+                            </linearGradient>
+                            <linearGradient id="windowWarm" x1="0%" y1="0%" x2="0%" y2="100%">
+                                <stop offset="0%" stop-color="#ffd54f" stop-opacity="0.85"/>
+                                <stop offset="100%" stop-color="#ffb300" stop-opacity="0.7"/>
+                            </linearGradient>
+                            <linearGradient id="windowNeon" x1="0%" y1="0%" x2="0%" y2="100%">
+                                <stop offset="0%" stop-color="#80deea" stop-opacity="0.8"/>
+                                <stop offset="100%" stop-color="#00acc1" stop-opacity="0.6"/>
+                            </linearGradient>
+                            <linearGradient id="solarGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+                                <stop offset="0%" stop-color="#0284c7"/>
+                                <stop offset="100%" stop-color="#0369a1"/>
+                            </linearGradient>
+                        </defs>
+
+                        <!-- Bầu trời đêm -->
+                        <rect width="600" height="400" rx="20" fill="url(#skyGrad)"/>
+                        
+                        <!-- Sân cỏ -->
+                        <path d="M 0 320 Q 300 300 600 320 L 600 400 L 0 400 Z" fill="#e2e8f0" opacity="0.9"/>
+                        <path d="M 0 340 Q 300 325 600 340 L 600 400 L 0 400 Z" fill="#cbd5e1"/>
+
+                        <!-- Mây trôi hậu cảnh -->
+                        <g fill="#ffffff" opacity="0.4" class="cloud-anim">
+                            <path d="M50 80 a20 20 0 0 1 20 -10 a30 30 0 0 1 50 10 a20 20 0 0 1 20 20 a20 20 0 0 1 -20 20 h-70 a20 20 0 0 1 -20 -20 a20 20 0 0 1 20 -20 z" />
+                        </g>
+                        <g fill="#ffffff" opacity="0.3" class="cloud-anim-2">
+                            <path d="M350 50 a15 15 0 0 1 15 -7 a22 22 0 0 1 36 7 a15 15 0 0 1 15 15 a15 15 0 0 1 -15 15 h-51 a15 15 0 0 1 -15 -15 a15 15 0 0 1 15 -15 z" />
+                        </g>
+
+                        <!-- Hạt lơ lửng sáng mờ -->
+                        <g fill="#0284c7" opacity="0.15" class="star-twinkle-svg">
+                            <circle cx="120" cy="50" r="2.5" />
+                            <circle cx="280" cy="40" r="2" />
+                            <circle cx="450" cy="70" r="3" />
+                            <circle cx="80" cy="110" r="2.5" />
+                            <circle cx="520" cy="90" r="2" />
+                            <circle cx="220" cy="95" r="2" />
+                        </g>
+
+                        <!-- CƠ THỂ NGÔI NHÀ VILLA HIỆN ĐẠI -->
+                        <!-- Khối bên trái - 2 tầng -->
+                        <rect x="160" y="150" width="280" height="180" fill="url(#wallGrad)" rx="8" stroke="#cbd5e1" stroke-width="1"/>
+                        <!-- Khối lầu nhô ra phía trước bên phải -->
+                        <rect x="300" y="130" width="160" height="90" fill="#f1f5f9" rx="6" stroke="#cbd5e1" stroke-width="1"/>
+                        <rect x="310" y="140" width="140" height="70" fill="url(#windowNeon)" rx="4"/>
+                        <!-- Khung gỗ trang trí lầu -->
+                        <rect x="295" y="125" width="170" height="100" fill="none" stroke="#7d5236" stroke-width="3" rx="8" />
+
+                        <!-- Tấm pin mặt trời trên mái lầu -->
+                        <polygon points="310 125, 450 125, 430 110, 330 110" fill="url(#solarGrad)"/>
+                        <line x1="380" y1="125" x2="380" y2="110" stroke="#fff" stroke-width="1" opacity="0.5"/>
+                        <line x1="345" y1="120" x2="415" y2="120" stroke="#fff" stroke-width="1" opacity="0.5"/>
+
+                        <!-- Mái chéo khối lầu trái -->
+                        <polygon points="145 150, 310 150, 280 130, 175 130" fill="url(#roofGrad)" />
+                        <!-- Cửa sổ lầu 1 trái -->
+                        <rect x="190" y="170" width="80" height="50" fill="url(#windowWarm)" rx="4"/>
+                        <line x1="230" y1="170" x2="230" y2="220" stroke="#1e293b" stroke-width="2"/>
+                        <line x1="190" y1="195" x2="270" y2="195" stroke="#1e293b" stroke-width="1"/>
+
+                        <!-- Tầng trệt bên phải: Phòng khách mở kính -->
+                        <rect x="310" y="240" width="115" height="90" fill="url(#windowWarm)" rx="4"/>
+                        <line x1="367" y1="240" x2="367" y2="330" stroke="#1e293b" stroke-width="2"/>
+                        <line x1="310" y1="285" x2="425" y2="285" stroke="#1e293b" stroke-width="1"/>
+
+                        <!-- CỬA CHÍNH VÀO NHÀ (Tương tác bấm vào) -->
+                        <g class="glow-door" id="svg-front-door">
+                            <rect x="180" y="325" width="80" height="8" fill="#cbd5e1" rx="2" stroke="#94a3b8" stroke-width="0.5" />
+                            <rect x="175" y="330" width="90" height="8" fill="#94a3b8" rx="2" />
+                            
+                            <!-- Khung cửa -->
+                            <rect x="195" y="238" width="50" height="88" fill="#5c4033" rx="4" />
+                            <!-- Cửa gỗ màu ấm -->
+                            <rect x="200" y="242" width="40" height="84" fill="url(#doorGrad)" rx="2" />
+                            
+                            <!-- Khóa thông minh AI pulsing phát sáng -->
+                            <circle cx="208" cy="285" r="5" fill="#0284c7" class="pulse-lock" filter="drop-shadow(0 0 5px var(--neon-cyan))" />
+                            <circle cx="208" cy="285" r="1.5" fill="#fff" />
+                            
+                            <!-- Quét tia sáng neon bảo mật ở cửa -->
+                            <line x1="200" y1="260" x2="240" y2="260" stroke="var(--neon-cyan)" stroke-width="1.5" opacity="0.7" class="pulse-lock"/>
+                        </g>
+
+                        <!-- Khóm cây bụi trang trí chân tường -->
+                        <path d="M140 330 Q 150 310 165 320 Q 175 305 190 330 Z" fill="#16a34a" opacity="0.6"/>
+                        <path d="M410 330 Q 425 315 435 322 Q 445 310 460 330 Z" fill="#16a34a" opacity="0.6"/>
+                    </svg>
+                </div>
+
+                <div class="intro-instruction">
+                    <div class="finger-pointer">
+                        <svg viewBox="0 0 24 24">
+                            <path d="M9 11.24V7.5a2.5 2.5 0 0 1 5 0v3.74c1.21-.81 2-2.18 2-3.74C16 4.47 13.53 2 10.5 2S5 4.47 5 7.5c0 1.56.79 2.93 2 3.74zm9.84 4.63l-4.54-2.26c-.17-.08-.35-.11-.54-.11H13v-6c0-.55-.45-1-1-1s-1 .45-1 1v9.79l-3.66-.77c-.19-.04-.39 0-.55.12L6 17.5l5.34 5.34c.3.3.7.47 1.13.47h6.05c.82 0 1.51-.62 1.62-1.44l.72-5.4c.12-.86-.42-1.68-1.22-1.92z"/>
+                        </svg>
+                    </div>
+                    <p>Nhấp vào Cánh cửa có khóa AI để vào nhà</p>
+                </div>
+            </div>
+        </section>
+
+        
+        <!-- GIAI ĐOẠN 1: KHÁM PHÁ CẤU TRÚC DỌC MỚI (PHASE 1 SCREEN) -->
+        <section id="phase1-screen" class="screen-container">
+            <div class="game-vertical-layout">
+                
+                <!-- 1. KHUNG CĂN PHÒNG (KHUNG CHỮ NHẬT VIỀN VÀNG NEON) -->
+                <div class="room-viewport" id="room-viewport-container">
+                    
+                    <div class="room-viewport-header">
+                        <div class="room-title">
+                            <div class="room-status-dot"></div>
+                            <h3>Phòng Khách Thông Minh Tối Giản</h3>
+                        </div>
+                        <div class="connection-count-badge">
+                            AI đang hoạt động 🧠
+                        </div>
+                    </div>
+
+                    <!-- Màn nháy đèn Party (Party Mode) -->
+                    <div class="party-glow-overlay"></div>
+
+                    <!-- Vẽ lại SVG nội thất tối giản đúng bản phác thảo -->
+                    <div class="inner-room-container">
+                        <svg class="inner-room-svg" viewBox="0 0 1000 450" xmlns="http://www.w3.org/2000/svg">
+                            <defs>
+                                <!-- Màu tường xám xanh nhẹ thanh lịch -->
+                                <linearGradient id="roomBgGrad" x1="0%" y1="0%" x2="0%" y2="100%">
+                                    <stop offset="0%" stop-color="#e2e8f0"/>
+                                    <stop offset="100%" stop-color="#cbd5e1"/>
+                                </linearGradient>
+                                <!-- Sàn gỗ cao cấp sáng tương phản -->
+                                <linearGradient id="floorGradInner" x1="0%" y1="0%" x2="0%" y2="100%">
+                                    <stop offset="0%" stop-color="#b48a53"/>
+                                    <stop offset="100%" stop-color="#8c6239"/>
+                                </linearGradient>
+                                <!-- Quầng Đèn LED áp tường tỏa quầng sáng hình nón xuống -->
+                                <radialGradient id="coneLightLeft" cx="220" cy="50" r="280" gradientUnits="userSpaceOnUse">
+                                    <stop offset="0%" stop-color="#ffb300" stop-opacity="0.95"/>
+                                    <stop offset="40%" stop-color="#ffd54f" stop-opacity="0.6"/>
+                                    <stop offset="75%" stop-color="#ffe082" stop-opacity="0.25"/>
+                                    <stop offset="100%" stop-color="#fff9c4" stop-opacity="0"/>
+                                </radialGradient>
+                                <radialGradient id="coneLightRight" cx="780" cy="50" r="280" gradientUnits="userSpaceOnUse">
+                                    <stop offset="0%" stop-color="#ffb300" stop-opacity="0.95"/>
+                                    <stop offset="40%" stop-color="#ffd54f" stop-opacity="0.6"/>
+                                    <stop offset="75%" stop-color="#ffe082" stop-opacity="0.25"/>
+                                    <stop offset="100%" stop-color="#fff9c4" stop-opacity="0"/>
+                                </radialGradient>
+                                <!-- Bầu trời xanh sau cửa trượt -->
+                                <linearGradient id="balconySky" x1="0%" y1="0%" x2="0%" y2="100%">
+                                    <stop offset="0%" stop-color="#e0f2fe"/>
+                                    <stop offset="100%" stop-color="#bae6fd"/>
+                                </linearGradient>
+                                
+                                <!-- Bộ lọc tạo nhiễu sóng trắng đen động cho Tivi (fractalNoise) -->
+                                <filter id="tvNoiseFilter" x="0%" y="0%" width="100%" height="100%">
+                                    <feTurbulence type="fractalNoise" baseFrequency="0.99" numOctaves="4" result="noise" />
+                                    <feColorMatrix type="matrix" values="1 0 0 0 0  1 0 0 0 0  1 0 0 0 0  0 0 0 0.45 0" />
+                                </filter>
+                            </defs>
+
+                            <!-- CẤU TRÚC PHÒNG (Nền tường & trần) -->
+                            <rect x="0" y="0" width="1000" height="350" fill="url(#roomBgGrad)"/>
+                            <rect x="0" y="350" width="1000" height="100" fill="url(#floorGradInner)"/>
+                            <rect x="0" y="344" width="1000" height="6" fill="#5c4033"/> <!-- Len chân tường -->
+
+                            <!-- 2 CÁNH CỬA KÍNH TRƯỢT THÔNG MINH SÁT TƯỜNG PHẢI -->
+                            <g id="device-glassdoor">
+                                <!-- Khung cửa sổ / Ban công phía sau -->
+                                <rect x="820" y="110" width="150" height="234" fill="url(#balconySky)" rx="6" />
+                                
+                                <!-- Hậu cảnh mây bay ngoài trời ban công -->
+                                <g fill="#ffffff" opacity="0.6">
+                                    <circle cx="860" cy="150" r="10" />
+                                    <circle cx="880" cy="150" r="14" />
+                                    <circle cx="900" cy="150" r="8" />
+                                    <rect x="860" y="142" width="40" height="16" rx="8" />
+                                </g>
+                                <line x1="820" y1="110" x2="970" y2="110" stroke="#94a3b8" stroke-width="2" />
+                                <line x1="820" y1="344" x2="970" y2="344" stroke="#94a3b8" stroke-width="2" />
+
+                                <!-- Cánh kính 2 bên trượt mở sang 2 bên -->
+                                <!-- Cánh kính trái -->
+                                <g class="glassdoor-left">
+                                    <rect x="824" y="114" width="71" height="226" fill="rgba(128, 222, 234, 0.4)" stroke="#64748b" stroke-width="2.5" rx="3" />
+                                    <!-- Sọc kính chéo phản quang -->
+                                    <line x1="835" y1="130" x2="865" y2="280" stroke="#fff" stroke-width="1" opacity="0.3"/>
+                                    <!-- Tay nắm cửa trái -->
+                                    <rect x="888" y="200" width="4" height="40" fill="#94a3b8" rx="1" />
+                                </g>
+                                <!-- Cánh kính phải -->
+                                <g class="glassdoor-right">
+                                    <rect x="895" y="114" width="71" height="226" fill="rgba(128, 222, 234, 0.4)" stroke="#64748b" stroke-width="2.5" rx="3" />
+                                    <!-- Sọc kính chéo phản quang -->
+                                    <line x1="905" y1="130" x2="935" y2="280" stroke="#fff" stroke-width="1" opacity="0.3"/>
+                                    <!-- Tay nắm cửa phải -->
+                                    <rect x="901" y="200" width="4" height="40" fill="#94a3b8" rx="1" />
+                                </g>
+                            </g>
+
+                            <!-- TỦ LẠNH 2 CÁNH SÁT TƯỜNG TRÁI -->
+                            <g id="device-fridge">
+                                <!-- Thân tủ lạnh -->
+                                <rect x="20" y="110" width="120" height="234" fill="#1e293b" rx="6" />
+                                
+                                <!-- Quầng sáng lấp lánh và thực phẩm bên trong khi mở tủ -->
+                                <g class="fridge-light">
+                                    <rect x="25" y="115" width="110" height="224" fill="rgba(255, 210, 0, 0.95)" rx="4"/>
+                                    <!-- Khay để thức ăn -->
+                                    <line x1="25" y1="170" x2="135" y2="170" stroke="#e2e8f0" stroke-width="3" opacity="0.9"/>
+                                    <line x1="25" y1="230" x2="135" y2="230" stroke="#e2e8f0" stroke-width="3" opacity="0.9"/>
+                                    <line x1="25" y1="290" x2="135" y2="290" stroke="#e2e8f0" stroke-width="3" opacity="0.9"/>
+                                    <!-- Trái cây, nước ngọt biểu thị mờ -->
+                                    <circle cx="55" cy="150" r="10" fill="#ea580c"/>
+                                    <circle cx="85" cy="150" r="11" fill="#16a34a"/>
+                                    <rect x="45" y="200" width="20" height="22" fill="#ffd200" rx="1"/>
+                                    <rect x="85" y="200" width="15" height="22" fill="#0284c7" rx="1"/>
+                                </g>
+
+                                <!-- Cánh cửa trái (Mở lật trái) -->
+                                <rect x="20" y="110" width="60" height="234" fill="#334155" rx="3" stroke="#1e293b" stroke-width="1.5" class="fridge-door-left"/>
+                                <rect x="70" y="210" width="5" height="40" fill="#cbd5e1" rx="1" class="fridge-door-left"/> <!-- Tay nắm trái -->
+
+                                <!-- Cánh cửa phải (Mở lật phải) -->
+                                <rect x="80" y="110" width="60" height="234" fill="#334155" rx="3" stroke="#1e293b" stroke-width="1.5" class="fridge-door-right"/>
+                                <rect x="85" y="210" width="5" height="40" fill="#cbd5e1" rx="1" class="fridge-door-right"/> <!-- Tay nắm phải -->
+                            </g>
+
+                            <!-- KỆ TỦ TIVI DƯỚI SÀN (TRANG TRÍ) -->
+                            <g id="sofa-group">
+                                <!-- Thân kệ tủ gỗ dưới sàn -->
+                                <rect x="360" y="300" width="280" height="44" fill="#475569" rx="4" stroke="#334155" stroke-width="1.5" />
+                                <!-- Hộc tủ bên trái -->
+                                <rect x="370" y="306" width="120" height="32" fill="#334155" rx="2" />
+                                <rect x="420" y="320" width="20" height="4" fill="#cbd5e1" rx="1" />
+                                <!-- Hộc tủ bên phải -->
+                                <rect x="510" y="306" width="120" height="32" fill="#334155" rx="2" />
+                                <rect x="560" y="320" width="20" height="4" fill="#cbd5e1" rx="1" />
+                                <!-- Chân kệ tủ -->
+                                <rect x="380" y="344" width="10" height="8" fill="#1e293b" />
+                                <rect x="610" y="344" width="10" height="8" fill="#1e293b" />
+                                
+                                <!-- Đồ trang trí trên kệ tủ -->
+                                <!-- Lọ hoa xinh xắn -->
+                                <ellipse cx="590" cy="292" rx="7" ry="8" fill="#e2e8f0" stroke="#cbd5e1" stroke-width="1" />
+                                <rect x="587" y="280" width="6" height="6" fill="#cbd5e1" />
+                                <path d="M590 280 Q580 268 570 270" fill="none" stroke="#16a34a" stroke-width="1.5" />
+                                <path d="M590 280 Q600 265 610 267" fill="none" stroke="#16a34a" stroke-width="1.5" />
+                                <!-- Cuốn sách chồng lên nhau -->
+                                <rect x="380" y="294" width="35" height="6" fill="#db2777" rx="1" />
+                                <rect x="383" y="288" width="29" height="6" fill="#0284c7" rx="1" />
+                            </g>
+
+                            <!-- LOA ĐỨNG TRỤ BÊN TRÁI KỆ TỦ TIVI (THIẾT BỊ LOA MỚI) -->
+                            <g id="device-speaker">
+                                <!-- Chân loa đứng dạng trụ -->
+                                <ellipse cx="320" cy="346" rx="14" ry="4" fill="#334155" />
+                                <!-- Thân loa dạng trụ tròn đứng -->
+                                <rect x="308" y="236" width="24" height="110" rx="6" fill="#1e293b" stroke="#334155" stroke-width="1.5" />
+                                <!-- Màng loa tròn (các vòng bass treble) -->
+                                <circle cx="320" cy="256" r="8" fill="#0f172a" stroke="#475569" stroke-width="0.8" />
+                                <circle cx="320" cy="256" r="3" fill="#94a3b8" />
+                                
+                                <circle cx="320" cy="290" r="9" fill="#0f172a" stroke="#475569" stroke-width="0.8" />
+                                <circle cx="320" cy="290" r="3.5" fill="#cbd5e1" />
+                                
+                                <circle cx="320" cy="324" r="9" fill="#0f172a" stroke="#475569" stroke-width="0.8" />
+                                <circle cx="320" cy="324" r="3.5" fill="#cbd5e1" />
+
+                                <!-- Viền LED chạy dọc sang trọng phát sáng khi loa mở -->
+                                <line x1="320" y1="240" x2="320" y2="342" stroke="var(--neon-pink)" stroke-width="1.5" opacity="0.3" class="speaker-led" />
+                                
+                                <!-- Các nốt nhạc bay lơ lửng khi loa phát nhạc -->
+                                <g class="speaker-notes">
+                                    <!-- Nốt nhạc 1 -->
+                                    <text x="315" y="220" font-size="16" fill="var(--neon-cyan)" class="note-item note1">♫</text>
+                                    <!-- Nốt nhạc 2 -->
+                                    <text x="325" y="215" font-size="14" fill="var(--neon-pink)" class="note-item note2">♪</text>
+                                    <!-- Nốt nhạc 3 -->
+                                    <text x="310" y="225" font-size="18" fill="var(--neon-purple)" class="note-item note3">♬</text>
+                                    <!-- Nốt nhạc 4 -->
+                                    <text x="320" y="220" font-size="15" fill="var(--neon-green)" class="note-item note4">♩</text>
+                                </g>
+                            </g>
+
+                            <!-- TIVI GẮN TƯỜNG THÀNH THIẾT BỊ TƯƠNG TÁC (TIVI MỚI) -->
+                            <g id="device-tv">
+                                <!-- Khung viền TV đen bóng -->
+                                <rect x="390" y="150" width="220" height="130" rx="6" fill="#0f172a" stroke="#334155" stroke-width="3" />
+                                <!-- Màn hình TV xanh đậm tinh tế -->
+                                <rect x="395" y="155" width="210" height="120" rx="3" fill="#1e293b" class="tv-screen" />
+                                <!-- Lớp nhiễu sóng trắng đen khi mở TV -->
+                                <rect x="395" y="155" width="210" height="120" rx="3" fill="#ffffff" filter="url(#tvNoiseFilter)" class="tv-screen-noise" opacity="0" />
+                                <!-- Hiệu ứng phản chiếu chéo trên màn hình -->
+                                <polygon points="395 155, 480 155, 415 275, 395 275" fill="#ffffff" opacity="0.04" />
+                                <!-- Chi tiết đèn LED nguồn nhỏ xinh phía dưới -->
+                                <circle cx="500" cy="281" r="1.5" fill="#e11d48" class="tv-indicator-led" />
+                            </g>
+
+                            <!-- QUẠT ĐỨNG BÊN PHẢI SOFA -->
+                            <g id="device-fan">
+                                <!-- Chân quạt đứng dưới sàn -->
+                                <ellipse cx="730" cy="340" rx="22" ry="6" fill="#475569"/>
+                                <line x1="730" y1="340" x2="730" y2="210" stroke="#64748b" stroke-width="5"/>
+                                <!-- Động cơ tròn phía sau -->
+                                <circle cx="730" cy="180" r="16" fill="#334155" />
+                                <!-- Lồng quạt bên ngoài -->
+                                <circle cx="730" cy="180" r="38" fill="none" stroke="#94a3b8" stroke-width="2" opacity="0.8"/>
+                                <line x1="730" y1="142" x2="730" y2="218" stroke="#94a3b8" stroke-width="0.5" opacity="0.6"/>
+                                <line x1="692" y1="180" x2="768" y2="180" stroke="#94a3b8" stroke-width="0.5" opacity="0.6"/>
+                                
+                                <!-- Cánh quạt quay động lý -->
+                                <g class="fan-blades">
+                                    <path d="M730 180 C736 156 748 144 736 144 C724 144 724 156 730 180 Z" fill="#e2e8f0" />
+                                    <path d="M730 180 C754 186 766 198 760 186 C754 174 742 174 730 180 Z" fill="#e2e8f0" />
+                                    <path d="M730 180 C706 192 694 204 700 192 C706 180 718 180 730 180 Z" fill="#e2e8f0" />
+                                    <circle cx="730" cy="180" r="8" fill="#cbd5e1" stroke="#334155" stroke-width="1.2" />
+                                </g>
+                            </g>
+
+                            <!-- MÁY LẠNH TREO TƯỜNG (CHÍNH GIỮA PHÍA TRÊN) -->
+                            <g id="device-ac">
+                                <!-- Thân máy treo tường trắng -->
+                                <rect x="440" y="50" width="120" height="34" fill="#ffffff" rx="4" stroke="#cbd5e1" stroke-width="1"/>
+                                <rect x="445" y="80" width="110" height="4" fill="#94a3b8" rx="1"/> <!-- Nắp phả gió -->
+                                <!-- Đèn nhiệt độ LED màu xanh -->
+                                <rect x="525" y="62" width="18" height="8" fill="#0f172a" rx="1"/>
+                                <circle cx="534" cy="66" r="1.5" fill="#0284c7" />
+                                
+                                <!-- Luồng sóng gió phả mát lạnh xuống sofa -->
+                                <g class="ac-wind-lines">
+                                    <path d="M455 84 Q450 105 440 125 Q435 135 445 145" stroke="var(--neon-cyan)" stroke-width="2.5" fill="none" />
+                                    <path d="M500 84 Q495 110 490 130 Q485 145 500 155" stroke="rgba(2, 132, 199, 0.4)" stroke-width="3" fill="none" />
+                                    <path d="M545 84 Q540 105 530 125 Q525 135 535 145" stroke="var(--neon-blue)" stroke-width="2" fill="none" />
+                                </g>
+                            </g>
+
+                            <!-- 2 ĐÈN LED ÁP TƯỜNG (Trái & Phải) -->
+                            <g id="device-light">
+                                <!-- Ánh sáng đèn LED áp tường rọi xuống (Polygon hình nón) -->
+                                <polygon points="220 50, 60 340, 380 340" fill="url(#coneLightLeft)" class="light-glow-overlay" />
+                                <polygon points="780 50, 620 340, 940 340" fill="url(#coneLightRight)" class="light-glow-overlay" />
+
+                                <!-- Bóng đèn LED áp tường bên trái -->
+                                <g>
+                                    <rect x="170" y="40" width="100" height="15" fill="#334155" rx="3" stroke="#1e293b" stroke-width="1"/>
+                                    <!-- Đèn phát sáng -->
+                                    <rect x="175" y="48" width="90" height="5" fill="#ffffff" class="bulb-glow" />
+                                </g>
+
+                                <!-- Bóng đèn LED áp tường bên phải -->
+                                <g>
+                                    <rect x="730" y="40" width="100" height="15" fill="#334155" rx="3" stroke="#1e293b" stroke-width="1"/>
+                                    <!-- Đèn phát sáng -->
+                                    <rect x="735" y="48" width="90" height="5" fill="#ffffff" class="bulb-glow" />
+                                </g>
+                            </g>
+
+                            <!-- ROBOT HÚT BỤI CHẠY AN TOÀN TRÊN SÀN (Giới hạn chạy ở CSS) -->
+                            <g id="device-vacuum">
+                                <g class="vacuum-body">
+                                    <!-- Đĩa hút bụi robo tròn xoe -->
+                                    <ellipse cx="200" cy="385" rx="32" ry="11" fill="#334155" stroke="#1e293b" stroke-width="1.5" />
+                                    <ellipse cx="200" cy="382" rx="30" ry="9" fill="#475569" />
+                                    <!-- Cảm biến Laser phát hồng ngoại quét bụi -->
+                                    <ellipse cx="200" cy="378" rx="10" ry="3" fill="#1e293b" />
+                                    <ellipse cx="200" cy="378" rx="4" ry="1.5" fill="#db2777" class="pulse-lock" filter="drop-shadow(0 0 3px #db2777)" />
+                                    
+                                    <!-- Bong bóng hạt sáng lấp lánh dọn sạch sàn -->
+                                    <g class="vacuum-sparkle">
+                                        <circle cx="150" cy="386" r="2.5" fill="var(--neon-green)" />
+                                        <circle cx="160" cy="383" r="2" fill="#fff" />
+                                        <circle cx="140" cy="388" r="1.5" fill="var(--neon-cyan)" />
+                                    </g>
+                                </g>
+                            </g>
+                        </svg>
+                    </div>
+
+                    <!-- Bảng chỉ dẫn gõ cửa hoặc quay về -->
+                    <div class="room-viewport-footer" style="display:none;"></div>
+                </div>
+
+                <!-- 2. BẢNG GIAO TIẾP AI NẰM NGANG (KHUNG CHỮ NHẬT VIỀN ĐỎ NEON) -->
+                <div class="ai-panel-horizontal">
+                    
+                    <!-- BÊN TRÁI: MIC THU ÂM (mic) VÀ ORB LUNA -->
+                    <div class="ai-left-section">
+                        <!-- Nút nhấn vào Micro tròn lớn (mic) -->
+                        <button type="button" class="btn-mic" id="btn-mic-input" title="Nói câu lệnh bằng giọng nói">
+                            <svg viewBox="0 0 24 24" id="mic-icon">
+                                <path d="M12 14c1.66 0 3-1.34 3-3V5c0-1.66-1.34-3-3-3S9 3.34 9 5v6c0 1.66 1.34 3 3 3zm-1 9h2v-3.08c3.39-.49 6-3.38 6-6.92h-2c0 2.76-2.24 5-5 5s-5-2.24-5-5H5c0 3.54 2.61 6.43 6 6.92V23z"/>
+                            </svg>
+                        </button>
+                        
+                        <!-- Quả cầu năng lượng AI LUNA lơ lửng -->
+                        <div class="luna-orb-container">
+                            <div class="luna-orb-ring"></div>
+                            <div class="luna-orb" id="luna-orb-element"></div>
+                        </div>
+                    </div>
+
+                    <!-- BÊN PHẢI: KHUNG ĐỐI THOẠI HỌC SINH & LUNA -->
+                    <div class="ai-right-section">
+                        <!-- AI trả lời (Bóng thoại LUNA) -->
+                        <div class="luna-chat-bubble-container">
+                            <div class="luna-chat-bubble">
+                                <strong>Trợ Lý LUNA (Smart AI)</strong>
+                                <span id="luna-speech-text">Chào mừng bạn đã vào nhà! Tôi là bộ não AI. Bạn hãy nhấn vào nút Micro (tròn) để nói câu lệnh hoặc gõ vào ô nhập liệu bên dưới nhé!</span>
+                            </div>
+                        </div>
+
+                        <!-- Lệnh từ học sinh (Khung chat & Nhật ký mini) -->
+                        <div class="chat-input-and-log-container">
+                            <form class="chat-input-area-horizontal" id="chat-form-input" style="flex: 1; display: flex; gap: 0.5rem;">
+                                <button type="button" class="btn-helper-commands" id="btn-show-help" title="Xem gợi ý">
+                                    <svg viewBox="0 0 24 24"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm1 16h-2v-2h2v2zm1.07-7.75l-.9.92C12.45 11.9 12 12.5 12 14h-2v-.5c0-1.1.45-2.1 1.17-2.83l1.24-1.26c.37-.36.59-.86.59-1.41 0-1.1-.9-2-2-2s-2 .9-2 2H7c0-2.76 2.24-5 5-5s5 2.24 5 5c0 1.04-.42 1.99-1.07 2.75z"/></svg>
+                                    Gợi Ý
+                                </button>
+                                <input type="text" class="chat-input" id="chat-input-field" placeholder="Nhập câu lệnh trực tiếp hoặc ngữ cảnh..." autocomplete="off">
+                                <button type="submit" class="btn-send" id="btn-submit-chat">
+                                    <svg viewBox="0 0 24 24"><path d="M2.01 21L23 12 2.01 3 2 10l15 2-15 2z"/></svg>
+                                </button>
+                            </form>
+
+                            <!-- Nhật ký lệnh mini tóm gọn -->
+                            <div class="chat-history-mini" id="chat-history-log">
+                                <div class="mini-log-item system">Smart AI online</div>
+                            </div>
+                        </div>
+                    </div>
+
+                </div>
+
+                <!-- Nút chuyển sang giai đoạn 2 -->
+                <div class="navigation-bar">
+                    <button class="btn-next-phase" id="btn-to-phase-2">
+                        Tiến sang Giai đoạn 2: Tự lập trình AI
+                        <svg viewBox="0 0 24 24">
+                            <path d="M12 4l-1.41 1.41L16.17 11H4v2h12.17l-5.58 5.59L12 20l8-8z"/>
+                        </svg>
+                    </button>
+                </div>
+            </div>
+        </section>
+
+        
+        <!-- GIAI ĐOẠN 2: LẬP TRÌNH AI MỚI (PHASE 2 SCREEN) -->
+        <section id="phase2-screen" class="screen-container">
+            <div class="programming-layout">
+                
+                <div class="programming-intro">
+                    <h3>Giai Đoạn 2: Huấn Luyện Bộ Não Cho AI Mới Tinh</h3>
+                    <p>Bây giờ bạn sẽ được tiếp quản một <strong>Trí tuệ nhân tạo mới tinh chưa có bất cứ dữ liệu nào</strong>! Trò chơi nối chữ dưới đây cho phép bạn tự do quyết định: Khi học sinh nói câu gì thì AI phải thực thi hành động gì. 
+                    <br>💡 <strong>Sáng tạo tối đa:</strong> Bạn có thể nối chéo lệch hoàn toàn (ví dụ: nói <i>"Sàn nhà dơ quá đi"</i> nhưng lại dạy AI <i>"Cửa kính trượt mở ra ban công"</i>). Hãy kết nối tất cả 8 thẻ để xem AI mới học và thực thi kỳ diệu như thế nào nhé!</p>
+                </div>
+
+                <!-- BẢNG KÉO THẢ NỐI DÂY ĐỘNG (MATCHING CANVAS) -->
+                <div class="matching-canvas-container" id="matching-drag-container">
+                    
+                    <!-- Khung SVG Overlay vẽ dây neon -->
+                    <svg class="connections-svg-overlay" id="connections-svg"></svg>
+
+                    <!-- Cột bên trái: Lời nói / Ngữ cảnh -->
+                    <div class="matching-column left" id="left-cards-column"></div>
+
+                    <!-- Cột bên phải: Hành động thiết bị -->
+                    <div class="matching-column right" id="right-cards-column"></div>
+
+                </div>
+
+                <!-- Thanh nút bấm dưới bảng lập trình -->
+                <div class="programming-actions">
+                    <button class="btn-programming clear" id="btn-clear-connections">
+                        Xóa tất cả các nối dây
+                    </button>
+                    <div class="connection-count-badge">
+                        Đã lập trình: <span id="connections-count">0</span> / 8 liên kết
+                    </div>
+                    <button class="btn-programming submit" id="btn-submit-programming">
+                        Hoàn thành Lập trình & Đi Test thử AI 🚀
+                    </button>
+                </div>
+
+            </div>
+        </section>
+
+
+        <!-- GIAI ĐOẠN 2 - KIỂM THỬ DỌC MỚI (TESTING SCREEN) -->
+        <section id="testing-screen" class="screen-container">
+            <div class="testing-vertical-layout">
+                
+                <!-- BÊN TRÊN: KHUNG CĂN PHÒNG (VIỀN VÀNG) -->
+                <div class="room-viewport" id="test-room-viewport-container">
+                    <div class="room-viewport-header">
+                        <div class="room-title">
+                            <div class="room-status-dot" style="background-color:var(--neon-purple); box-shadow:var(--shadow-purple);"></div>
+                            <h3>Phòng Khách - Thử Nghiệm AI Mới Của Bạn</h3>
+                        </div>
+                        <div class="connection-count-badge" style="color:var(--neon-purple); border-color:var(--border-glass-active);">
+                            AI Mới đang học... 🧠
+                        </div>
+                    </div>
+                    <div class="party-glow-overlay"></div>
+                    <div class="inner-room-container" id="inner-room-container-test"></div>
+                </div>
+
+                <!-- BÊN DƯỚI: KHUNG ĐIỀU KHIỂN THỬ NGHIỆM AI TỰ HUẤN LUYỆN (VIỀN TÍM/ĐỎ) -->
+                <div class="test-ai-setup-card">
+                    
+                    <!-- Bảng tóm tắt liên kết học sinh đã lập trình (Trái) -->
+                    <div class="test-left-section">
+                        <div class="test-title-desc">
+                            <h4>Bản đồ bộ não AI bạn vừa lập trình:</h4>
+                            <p>Đối chiếu các câu lệnh do bạn tự tay kéo dây.</p>
+                        </div>
+                        
+                        <div class="custom-rules-table-card">
+                            <div id="custom-rules-table-body">
+                                <!-- Điền các hàng liên kết tại đây -->
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Danh sách các nút câu nói nhanh & Hoàn thành (Phải) -->
+                    <div class="test-right-section">
+                        <div class="test-title-desc" style="border-bottom: none; margin-bottom: 0;">
+                            <h4>Hãy nhấn vào nút câu nói để thử nghiệm AI mới:</h4>
+                        </div>
+                        <div class="test-quick-commands-grid" id="test-quick-commands-container">
+                            <!-- JS tự tạo 6 nút bấm nhanh từ 6 câu nói -->
+                        </div>
+
+                        <!-- Nút hoàn thành cúp vinh danh -->
+                        <button class="btn-finish-game" id="btn-finish-celebration" style="margin-top: 1rem;">
+                            Hoàn thành xuất sắc bài học AI Master! 🏆
+                        </button>
+                    </div>
+
+                </div>
+
+                <!-- Nút quay lại tái lập trình -->
+                <div class="navigation-bar" style="margin-top: 0;">
+                    <button class="btn-programming clear" id="btn-back-to-programming" style="width: 100%; justify-content: center;">
+                        Quay lại Giai đoạn 2: Tự lập trình lại các nút nối
+                    </button>
+                </div>
+
+            </div>
+        </section>
+
+    </main>
+
+    <!-- HỘP THOẠI TRỢ GIÚP LỆNH SẴN CÓ -->
+    <div class="modal-overlay" id="modal-help-commands">
+        <div class="glass-modal">
+            <div class="modal-header">
+                <h3>
+                    <svg viewBox="0 0 24 24"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm1 16h-2v-2h2v2zm1.07-7.75l-.9.92C12.45 11.9 12 12.5 12 14h-2v-.5c0-1.1.45-2.1 1.17-2.83l1.24-1.26c.37-.36.59-.86.59-1.41 0-1.1-.9-2-2-2-2.76 0-5 2.24-5 5h2c0-1.1.9-2 2-2s2 .9 2 2c0 1.04-.42 1.99-1.07 2.75z"/></svg>
+                    Bảng Gợi Ý Câu Lệnh Cho AI Smart Home
+                </h3>
+                <button class="btn-close-modal" id="btn-close-help">&times;</button>
+            </div>
+            <div class="modal-body">
+                <div class="commands-help-list">
+                    
+                    <div>
+                        <h4 class="commands-section-title">1. Nhóm Câu Lệnh Trực Tiếp (Bật/Tắt Thiết Bị)</h4>
+                        <div class="commands-grid-help">
+                            <div class="help-command-item" data-cmd="Bật quạt">
+                                <span class="help-command-input">"Bật quạt" / "Tắt quạt"</span>
+                                <span class="help-command-effect">Vật lý: Cánh quạt quay tít / ngừng quay</span>
+                            </div>
+                            <div class="help-command-item" data-cmd="Bật đèn">
+                                <span class="help-command-input">"Bật đèn" / "Tắt đèn"</span>
+                                <span class="help-command-effect">Ánh sáng: Đèn LED áp tường rọi chùm sáng cone ấm</span>
+                            </div>
+                            <div class="help-command-item" data-cmd="Kích hoạt robot hút bụi">
+                                <span class="help-command-input">"Kích hoạt robot hút bụi" / "Dừng hút bụi"</span>
+                                <span class="help-command-effect">Vận động: Robot trượt đi dọn dẹp an toàn dưới sàn</span>
+                            </div>
+                            <div class="help-command-item" data-cmd="Mở tủ lạnh">
+                                <span class="help-command-input">"Mở tủ lạnh" / "Đóng tủ lạnh"</span>
+                                <span class="help-command-effect">Nhà bếp: Cửa tủ lạnh 2 cánh mở lật phát sáng</span>
+                            </div>
+                            <div class="help-command-item" data-cmd="Bật máy lạnh">
+                                <span class="help-command-input">"Bật máy lạnh" / "Tắt máy lạnh"</span>
+                                <span class="help-command-effect">Môi trường: Thổi ra các làn sóng gió mát lạnh</span>
+                            </div>
+                            <div class="help-command-item" data-cmd="Mở cửa kính">
+                                <span class="help-command-input">"Mở cửa kính" / "Đóng cửa kính"</span>
+                                <span class="help-command-effect">Mở cửa: Hai cánh kính tự động trượt mở ra ban công</span>
+                            </div>
+                            <div class="help-command-item" data-cmd="Bật tivi">
+                                <span class="help-command-input">"Bật tivi" / "Tắt tivi"</span>
+                                <span class="help-command-effect">Xem phim: Màn hình hiển thị nhiễu trắng đen hoạt động</span>
+                            </div>
+                            <div class="help-command-item" data-cmd="Bật loa">
+                                <span class="help-command-input">"Bật loa" / "Tắt loa"</span>
+                                <span class="help-command-effect">Âm nhạc: Loa dạng trụ phát nhạc, có nốt nhạc bay lên</span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div style="margin-top:0.5rem;">
+                        <h4 class="commands-section-title">2. Nhóm Câu Lệnh Ngữ Cảnh (AI Tự Phân Tích Logic)</h4>
+                        <div class="commands-grid-help">
+                            <div class="help-command-item" data-cmd="Nóng quá">
+                                <span class="help-command-input">"Nóng quá" / "Tôi oi bức quá"</span>
+                                <span class="help-command-effect">AI phân tích: Tự bật QUẠT & MÁY LẠNH mát lạnh</span>
+                            </div>
+                            <div class="help-command-item" data-cmd="Tối quá không thấy đường">
+                                <span class="help-command-input">"Tối quá không thấy đường" / "Mở đèn lên đi"</span>
+                                <span class="help-command-effect">AI phân tích: Thắp sáng ĐÈN LED ÁP TƯỜNG hai bên</span>
+                            </div>
+                            <div class="help-command-item" data-cmd="Hôm nay ăn gì nhỉ">
+                                <span class="help-command-input">"Hôm nay ăn gì nhỉ" / "Tôi đói bụng quá"</span>
+                                <span class="help-command-effect">AI phân tích: Tự động MỞ TỦ LẠNH 2 CÁNH tìm đồ ăn</span>
+                            </div>
+                            <div class="help-command-item" data-cmd="Sàn nhà dơ quá đi">
+                                <span class="help-command-input">"Sàn nhà dơ quá đi" / "Nhà bẩn thế"</span>
+                                <span class="help-command-effect">AI suy luận đa bước: Sàn nhà dơ ➔ Lau dọn ➔ Bật ROBO HÚT BỤI</span>
+                            </div>
+                            <div class="help-command-item" data-cmd="Hãy mở cửa kính ban công">
+                                <span class="help-command-input">"Hãy mở cửa kính ban công" / "Mở cửa cho gió vào"</span>
+                                <span class="help-command-effect">AI phân tích: Kích hoạt TRƯỢT MỞ CỬA KÍNH 2 CÁNH</span>
+                            </div>
+                            <div class="help-command-item" data-cmd="Buồn quá">
+                                <span class="help-command-input">"Buồn quá" / "Chán quá" / "Giải trí"</span>
+                                <span class="help-command-effect">AI phân tích: Tự động BẬT TIVI & BẬT LOA giải trí cùng lúc</span>
+                            </div>
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- HỘP THOẠI CHÚC MỪNG HOÀN THÀNH XUẤT SẮC -->
+    <div class="modal-overlay" id="modal-congrats-celebration">
+        <div class="glass-modal">
+            <div class="congrats-modal-body">
+                <div class="trophy-glow-icon">
+                    <svg viewBox="0 0 24 24">
+                        <path d="M18 2H6v2H1v6c0 3.67 2.58 6.74 6 7.47V20H2v2h20v-2h-5v-2.53c3.42-.73 6-3.8 6-7.47V4h-5V2zm-5 16h-2v-4h2v4zm6.2-10c-.17 2.06-1.9 3.6-4.2 3.6h-1V4h5.2v4zM4.8 8V4H10v7.6H9c-2.3 0-4.03-1.54-4.2-3.6z"/>
+                    </svg>
+                </div>
+                <div class="congrats-title">Chúc mừng bạn đã tốt nghiệp!</div>
+                <div class="congrats-desc">
+                    Bạn đã xuất sắc hoàn thành bài học giáo dục tương tác về AI Smart Home! 
+                    <br>Qua trò chơi này, bạn đã tự tay tìm hiểu cách **Trợ lý AI LUNA** dịch ngôn ngữ tự nhiên để vận hành thiết bị, đồng thời hiểu được nguyên lý quan trọng nhất của AI: **Bộ não của AI hoạt động dựa trên chính dữ liệu mà con người thiết lập nối dây cho nó (huấn luyện dữ liệu)!**
+                </div>
+                <button class="btn-restart-game" id="btn-restart-from-congrats">
+                    Chơi lại từ đầu game
+                    <svg width="18" height="18" fill="currentColor" viewBox="0 0 24 24">
+                        <path d="M12 6v3l4-4-4-4v3c-4.42 0-8 3.58-8 8 0 1.57.46 3.03 1.24 4.26L6.7 14.8c-.45-.83-.7-1.79-.7-2.8 0-3.31 2.69-6 6-6zm6.76 1.74L17.3 9.2c.44.84.7 1.79.7 2.8 0 3.31-2.69 6-6 6v-3l-4 4 4 4v-3c4.42 0 8-3.58 8-8 0-1.57-.46-3.03-1.24-4.26z"/>
+                    </svg>
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Tải tệp tin logic JS xử lý -->
+    <script src="app.js"></script>
+</body>
+</html>

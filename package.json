@@ -1,0 +1,19 @@
+{
+  "name": "ai-smart-home-game",
+  "version": "1.0.0",
+  "description": "Smart Home AI educational mini-game for students",
+  "main": "index.html",
+  "scripts": {
+    "start": "npx -y http-server -p 3000",
+    "dev": "npx -y http-server -p 3000"
+  },
+  "keywords": [
+    "ai",
+    "smart-home",
+    "education",
+    "game",
+    "drag-and-drop"
+  ],
+  "author": "Antigravity",
+  "license": "MIT"
+}
