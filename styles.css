@@ -728,7 +728,7 @@ main {
 }
 
 .device-light-on .light-glow-overlay {
-    opacity: 0.65; /* Giảm độ sáng của đèn cho nhạt và dịu nhẹ hơn */
+    opacity: 0.28; /* Giảm độ sáng siêu mờ nhạt, chỉ tạo một vệt sáng be dịu nhẹ cực kỳ tinh tế */
 }
 
 /* Tự động tối phòng khi tắt đèn và sáng bừng lên khi bật đèn */
