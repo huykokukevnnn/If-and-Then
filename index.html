@@ -5,7 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
     <title>AI Smart Home - Game Giáo Dục Trải Nghiệm & Lập Trình AI</title>
     <meta name="description" content="Trò chơi mini game tương tác giáo dục học sinh về cách thức hoạt động và lập trình Trí tuệ Nhân tạo (AI) ứng dụng vào nhà thông minh Smart Home.">
-    <link rel="stylesheet" href="styles.css?v=2.0">
+    <link rel="stylesheet" href="styles.css?v=3.0">
 </head>
 <body>
     <div class="star-bg"></div>
@@ -205,11 +205,16 @@
                     <div class="inner-room-container">
                         <svg class="inner-room-svg" style="width: 100%; max-height: 600px; aspect-ratio: 1000 / 450;" viewBox="0 0 1000 450" xmlns="http://www.w3.org/2000/svg">
                             <defs>
-                                <!-- Màu tường xám xanh nhẹ thanh lịch -->
+                                <!-- Màu tường be/kem ấm sữa phong cách Scandinavian -->
                                 <linearGradient id="roomBgGrad" x1="0%" y1="0%" x2="0%" y2="100%">
-                                    <stop offset="0%" stop-color="#1e293b"/>
-                                    <stop offset="100%" stop-color="#0f172a"/>
+                                    <stop offset="0%" stop-color="#FAF7F2"/>
+                                    <stop offset="100%" stop-color="#EADDC9"/>
                                 </linearGradient>
+                                <!-- Giấy dán tường họa tiết sọc dọc mảnh và chấm mịn sang trọng -->
+                                <pattern id="wallpaperPattern" width="30" height="30" patternUnits="userSpaceOnUse">
+                                    <line x1="0" y1="0" x2="0" y2="30" stroke="rgba(197, 160, 89, 0.08)" stroke-width="1.2"/>
+                                    <circle cx="15" cy="15" r="0.8" fill="rgba(197, 160, 89, 0.06)"/>
+                                </pattern>
                                 <!-- Sàn gỗ cao cấp sáng tương phản -->
                                 <linearGradient id="floorGradInner" x1="0%" y1="0%" x2="0%" y2="100%">
                                     <stop offset="0%" stop-color="#8c5b30"/>
@@ -255,15 +260,17 @@
                                 </filter>
                                 <!-- Quầng Đèn LED áp tường tỏa quầng sáng hình nón xuống -->
                                 <radialGradient id="coneLightLeft" cx="220" cy="50" r="280" gradientUnits="userSpaceOnUse">
-                                    <stop offset="0%" stop-color="#f59e0b" stop-opacity="0.95"/>
-                                    <stop offset="35%" stop-color="#fbbf24" stop-opacity="0.6"/>
-                                    <stop offset="70%" stop-color="#fde047" stop-opacity="0.25"/>
+                                    <stop offset="0%" stop-color="#d97706" stop-opacity="1"/>
+                                    <stop offset="30%" stop-color="#f59e0b" stop-opacity="0.85"/>
+                                    <stop offset="60%" stop-color="#fbbf24" stop-opacity="0.5"/>
+                                    <stop offset="85%" stop-color="#fde047" stop-opacity="0.2"/>
                                     <stop offset="100%" stop-color="#fffbeb" stop-opacity="0"/>
                                 </radialGradient>
                                 <radialGradient id="coneLightRight" cx="780" cy="50" r="280" gradientUnits="userSpaceOnUse">
-                                    <stop offset="0%" stop-color="#f59e0b" stop-opacity="0.95"/>
-                                    <stop offset="35%" stop-color="#fbbf24" stop-opacity="0.6"/>
-                                    <stop offset="70%" stop-color="#fde047" stop-opacity="0.25"/>
+                                    <stop offset="0%" stop-color="#d97706" stop-opacity="1"/>
+                                    <stop offset="30%" stop-color="#f59e0b" stop-opacity="0.85"/>
+                                    <stop offset="60%" stop-color="#fbbf24" stop-opacity="0.5"/>
+                                    <stop offset="85%" stop-color="#fde047" stop-opacity="0.2"/>
                                     <stop offset="100%" stop-color="#fffbeb" stop-opacity="0"/>
                                 </radialGradient>
                                 <!-- Bầu trời xanh sau cửa trượt -->
@@ -281,6 +288,7 @@
 
                             <!-- CẤU TRÚC PHÒNG (Nền tường & trần) -->
                             <rect x="0" y="0" width="1000" height="350" fill="url(#roomBgGrad)"/>
+                            <rect x="0" y="0" width="1000" height="350" fill="url(#wallpaperPattern)" opacity="0.9"/>
                             <rect x="0" y="350" width="1000" height="100" fill="url(#floorGradInner)"/>
                             <rect x="0" y="344" width="1000" height="6" fill="#3c220f"/> <!-- Len chân tường -->
 
