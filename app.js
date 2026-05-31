@@ -696,6 +696,7 @@ const App = {
             const tvVideo = document.getElementById('tvVideo');
             if (tvVideo) {
                 if (targetState) {
+                    tvVideo.loop = true; // Kích hoạt loop vô hạn bằng code JS cho chắc chắn
                     tvVideo.play().catch(e => console.log("Video auto-play blocked: ", e));
                 } else {
                     tvVideo.pause();
