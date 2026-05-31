@@ -710,6 +710,7 @@ const App = {
                 if (targetState) {
                     tvVideo.loop = true; // Kích hoạt loop vô hạn bằng code JS cho chắc chắn
                     tvVideo.muted = false; // Mở khóa âm thanh để nghe được tiếng của clip!
+                    tvVideo.volume = 0.5; // Đặt âm lượng cố định ở mức 50% nghe êm ái hơn
                     tvVideo.play().catch(e => {
                         console.log("Video auto-play blocked with sound, attempting muted: ", e);
                         // Fallback: Nếu trình duyệt quá khắt khe chặn phát tiếng, tắt tiếng để giữ video chạy mượt mà
