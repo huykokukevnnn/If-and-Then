@@ -774,7 +774,7 @@ main {
 }
 
 .device-fan-on .fan-blades {
-    animation: spin 0.35s linear infinite;
+    animation: spin 0.08s linear infinite; /* Tăng tốc độ quay cực nhanh và mạnh mẽ */
 }
 
 /* Máy lạnh phả gió */
@@ -826,7 +826,7 @@ main {
 
 /* Robo trượt tuần hoàn trong tọa độ an toàn */
 .device-vacuum-on .vacuum-body {
-    animation: vacuumMove 5s ease-in-out infinite alternate;
+    animation: vacuumMove 12s ease-in-out infinite alternate; /* Giảm tốc độ di chuyển siêu chậm, êm ái và thực tế */
 }
 
 .vacuum-sparkle {
