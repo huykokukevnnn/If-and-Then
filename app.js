@@ -673,6 +673,18 @@ const App = {
             }
         }
 
+        // Tự động tối/sáng căn phòng khi bật/tắt đèn
+        if (devName === 'light') {
+            const containers = document.querySelectorAll('.inner-room-container');
+            containers.forEach(container => {
+                if (targetState) {
+                    container.classList.add('device-light-on');
+                } else {
+                    container.classList.remove('device-light-on');
+                }
+            });
+        }
+
         // Tự động cập nhật số liệu Dashboard theo hoạt động
         if (devName === 'ac' && targetState) {
             GameData.dashboardMetrics.temp = 24;
@@ -1341,6 +1353,11 @@ const App = {
                 el.classList.remove(`device-${dev}-on`);
             }
         }
+        
+        const containers = document.querySelectorAll('.inner-room-container');
+        containers.forEach(container => {
+            container.classList.remove('device-light-on');
+        });
         
         const rvc = document.getElementById('room-viewport-container');
         if (rvc) rvc.className = 'room-viewport';

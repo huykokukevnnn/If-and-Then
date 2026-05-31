@@ -5,7 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
     <title>AI Smart Home - Game Giáo Dục Trải Nghiệm & Lập Trình AI</title>
     <meta name="description" content="Trò chơi mini game tương tác giáo dục học sinh về cách thức hoạt động và lập trình Trí tuệ Nhân tạo (AI) ứng dụng vào nhà thông minh Smart Home.">
-    <link rel="stylesheet" href="styles.css?v=5.0">
+    <link rel="stylesheet" href="styles.css?v=6.0">
 </head>
 <body>
     <div class="star-bg"></div>
@@ -295,6 +295,8 @@
                             <rect x="0" y="0" width="1000" height="350" fill="url(#wallpaperPattern)" opacity="0.9"/>
                             <rect x="0" y="350" width="1000" height="100" fill="url(#floorGradInner)"/>
                             <rect x="0" y="344" width="1000" height="6" fill="#3c220f"/> <!-- Len chân tường -->
+                            <!-- Lớp phủ bóng tối ấm cúng khi đèn phòng tắt (Dim Room Overlay) -->
+                            <rect id="roomDimOverlay" x="0" y="0" width="1000" height="450" fill="#070a13" opacity="0.25" style="transition: opacity 0.5s ease; pointer-events: none;" />
 
                             <!-- 2 CÁNH CỬA KÍNH TRƯỢT THÔNG MINH SÁT TƯỜNG PHẢI -->
                             <g id="device-glassdoor">

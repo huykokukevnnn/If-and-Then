@@ -728,7 +728,18 @@ main {
 }
 
 .device-light-on .light-glow-overlay {
-    opacity: 0.92; /* Tăng độ đục để quầng sáng vàng neon nổi bần bật trên nền be sáng */
+    opacity: 0.65; /* Giảm độ sáng của đèn cho nhạt và dịu nhẹ hơn */
+}
+
+/* Tự động tối phòng khi tắt đèn và sáng bừng lên khi bật đèn */
+#roomDimOverlay {
+    opacity: 0.25 !important;
+    transition: opacity 0.5s ease;
+}
+
+.inner-room-container:has(.device-light-on) #roomDimOverlay,
+.inner-room-container.device-light-on #roomDimOverlay {
+    opacity: 0 !important;
 }
 
 .bulb-glow {
