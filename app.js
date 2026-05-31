@@ -592,7 +592,7 @@ const App = {
             triggered = true;
         } else if (this.matchKeywords(text, ["bật tivi", "bat tivi", "mở tivi", "mo tivi", "bật tv", "mở tv", "tivi", "xem tivi", "xem tv"])) {
             actions.push({ devName: 'tv', state: true });
-            explanation = "Tivi treo tường đã được mở! Màn hình đang hiển thị nhiễu sóng trắng đen sinh động biểu thị trạng thái hoạt động.";
+            explanation = "Tivi đã được bật";
             triggered = true;
         }
 
@@ -1258,7 +1258,7 @@ const App = {
             else if (actionKey === 'fridge_open') runExplanation = "Tôi đã MỞ CỬA TỦ LẠNH 2 CÁNH ấm áp thức ăn.";
             else if (actionKey === 'glassdoor_open') runExplanation = "Tôi đã trượt mở hai cánh CỬA KÍNH BAN CÔNG.";
             else if (actionKey === 'vacuum_on') runExplanation = "Tôi đã kích hoạt ROBOT HÚT BỤI chạy dọn dẹp.";
-            else if (actionKey === 'tv_on') runExplanation = "Tôi đã mở Tivi nhiễu sóng trắng đen hoạt động.";
+            else if (actionKey === 'tv_on') runExplanation = "Tivi đã được bật";
             else if (actionKey === 'speaker_on') runExplanation = "Tôi đã bật Loa trụ quẩy nhạc nốt bay lơ lửng.";
         } else {
             if (actionKey === 'fan_on') runExplanation = "Tôi đã tắt CÁNH QUẠT ĐIỆN.";
