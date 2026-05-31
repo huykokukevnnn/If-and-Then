@@ -5,7 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
     <title>AI Smart Home - Game Giáo Dục Trải Nghiệm & Lập Trình AI</title>
     <meta name="description" content="Trò chơi mini game tương tác giáo dục học sinh về cách thức hoạt động và lập trình Trí tuệ Nhân tạo (AI) ứng dụng vào nhà thông minh Smart Home.">
-    <link rel="stylesheet" href="styles.css?v=14.0">
+    <link rel="stylesheet" href="styles.css?v=15.0">
 </head>
 <body>
     <div class="star-bg"></div>
@@ -61,19 +61,37 @@
 
                                  <svg class="exterior-house-svg" viewBox="0 0 600 400" xmlns="http://www.w3.org/2000/svg">
                         <defs>
-                            <!-- Bầu trời Gradient bình minh rực rỡ ấm áp (Tờ mờ sáng cực kỳ đẹp mắt) -->
+                            <!-- Bầu trời Gradient trong xanh rực rỡ ban ngày -->
                             <linearGradient id="skyGrad" x1="0%" y1="0%" x2="0%" y2="100%">
-                                <stop offset="0%" stop-color="#141a29"/> <!-- Tầng mây đêm trên cao -->
-                                <stop offset="35%" stop-color="#2a2550"/> <!-- Sắc tím hoàng hôn dịu dàng -->
-                                <stop offset="65%" stop-color="#903772"/> <!-- Hồng ánh bình minh rạng rỡ -->
-                                <stop offset="100%" stop-color="#fdba74"/> <!-- Ánh nắng vàng be ấm sực ở đường chân trời -->
+                                <stop offset="0%" stop-color="#0284c7"/> <!-- Deep sky blue -->
+                                <stop offset="45%" stop-color="#38bdf8"/> <!-- Sky blue azure -->
+                                <stop offset="85%" stop-color="#bae6fd"/> <!-- Horizon soft baby blue -->
+                                <stop offset="100%" stop-color="#e0f2fe"/> <!-- Horizon white glow -->
                             </linearGradient>
-                            <!-- Tường đá phiến xanh xám hiện đại, nổi bật có highlight -->
+                            <!-- Tường thạch cao trắng xám hiện đại phong cách Bắc Âu -->
                             <linearGradient id="wallDarkBlue" x1="0%" y1="0%" x2="0%" y2="100%">
-                                <stop offset="0%" stop-color="#344966"/> <!-- Đá phiến xám xanh sáng -->
-                                <stop offset="100%" stop-color="#1e2c3d"/> <!-- Đáy đậm giữ khối vững chãi -->
+                                <stop offset="0%" stop-color="#f8fafc"/> <!-- Trắng tinh khôi cực sang -->
+                                <stop offset="100%" stop-color="#cbd5e1"/> <!-- Xám bạc nhẹ đổ bóng khối -->
                             </linearGradient>
-                            <!-- Cửa sổ & Cửa chính phát sáng rực rỡ đầy sức sống -->
+                            <!-- Kính phản quang màu xanh trời ban ngày -->
+                            <linearGradient id="windowGlass" x1="0%" y1="0%" x2="100%" y2="100%">
+                                <stop offset="0%" stop-color="#e0f2fe"/>
+                                <stop offset="30%" stop-color="#7dd3fc"/>
+                                <stop offset="70%" stop-color="#38bdf8"/>
+                                <stop offset="100%" stop-color="#0284c7"/>
+                            </linearGradient>
+                            <!-- Gỗ Teak/Oak ấm áp sang trọng cho ngoại thất -->
+                            <linearGradient id="woodGrad" x1="0%" y1="0%" x2="0%" y2="100%">
+                                <stop offset="0%" stop-color="#fbbf24"/> <!-- Sồi ấm -->
+                                <stop offset="100%" stop-color="#b45309"/> <!-- Teak đậm quý phái -->
+                            </linearGradient>
+                            <!-- Màu cửa garage kim loại sang xịn -->
+                            <linearGradient id="garageGrad" x1="0%" y1="0%" x2="100%" y2="0%">
+                                <stop offset="0%" stop-color="#475569" />
+                                <stop offset="50%" stop-color="#64748b" />
+                                <stop offset="100%" stop-color="#334155" />
+                            </linearGradient>
+                            <!-- Giữ lại windowWarm cho các phần tử cần tương thích ngược -->
                             <linearGradient id="windowWarm" x1="0%" y1="0%" x2="0%" y2="100%">
                                 <stop offset="0%" stop-color="#fffbeb"/>
                                 <stop offset="40%" stop-color="#fde047"/>
@@ -81,15 +99,15 @@
                             </linearGradient>
                         </defs>
 
-                        <!-- Bầu trời tờ mờ sáng với bo góc mượt mà -->
+                        <!-- Bầu trời ban ngày trong vắt -->
                         <rect width="600" height="400" rx="20" fill="url(#skyGrad)"/>
                         
-                        <!-- Dải đồi núi xa xăm hậu cảnh màu tím hồng của bình minh -->
-                        <path d="M-20 320 Q60 250 140 280 Q220 270 300 320 Q380 260 460 295 Q540 250 620 320 L620 400 L-20 400 Z" fill="#1b122e" />
-                        <path d="M-20 335 Q150 285 320 312 Q490 290 620 335 L620 400 L-20 400 Z" fill="#20173b" />
+                        <!-- Dải đồi núi xa xăm hậu cảnh màu xanh mờ sương nhẹ nhàng -->
+                        <path d="M-20 320 Q60 250 140 280 Q220 270 300 320 Q380 260 460 295 Q540 250 620 320 L620 400 L-20 400 Z" fill="#86a391" />
+                        <path d="M-20 335 Q150 285 320 312 Q490 290 620 335 L620 400 L-20 400 Z" fill="#6b8e78" />
 
-                        <!-- Hạt sao lấp lánh mờ dần khi bình minh hé rạng -->
-                        <g fill="#ffffff" opacity="0.45" class="star-twinkle-svg">
+                        <!-- Hạt sao ban đêm ẩn dưới ánh mặt trời -->
+                        <g fill="#ffffff" opacity="0.0" class="star-twinkle-svg">
                             <circle cx="80" cy="50" r="0.8" />
                             <circle cx="150" cy="80" r="1.2" />
                             <circle cx="280" cy="40" r="0.8" />
@@ -98,23 +116,23 @@
                             <circle cx="510" cy="110" r="0.8" />
                         </g>
 
-                        <!-- Mây bay lơ lửng ban mai đỏ ửng nhẹ -->
-                        <g fill="#fecdd3" opacity="0.22" class="cloud-anim">
+                        <!-- Mây trắng lơ lửng ban ngày tràn đầy sinh khí -->
+                        <g fill="#ffffff" opacity="0.85" class="cloud-anim">
                             <path d="M40 90 a15 15 0 0 1 15 -8 a25 25 0 0 1 40 8 a15 15 0 0 1 15 15 a15 15 0 0 1 -15 15 h-55 a15 15 0 0 1 -15 -15 a15 15 0 0 1 15 -15 z" />
                         </g>
 
-                        <!-- Vỉa hè bên đường màu xám đá -->
-                        <rect x="0" y="340" width="600" height="12" fill="#2d3748" />
+                        <!-- Vỉa hè bên đường màu xám xi măng sạch sẽ -->
+                        <rect x="0" y="340" width="600" height="12" fill="#94a3b8" />
 
                         <!-- CƠ THỂ BIỆT THỰ HIỆN ĐẠI NỔI BẬT TỔNG THỂ -->
                         
                         <!-- 1. Cụm nhà bên trái: Khối đứng 2 tầng chính -->
                         <rect x="150" y="120" width="135" height="220" fill="url(#wallDarkBlue)" stroke="#0f172a" stroke-width="1.2" />
-                        <!-- Nóc mái tối sẫm -->
-                        <rect x="145" y="112" width="145" height="8" fill="#111827" rx="1.5" />
+                        <!-- Nóc mái tối sẫm màu Charcoal hiện đại -->
+                        <rect x="145" y="112" width="145" height="8" fill="#334155" rx="1.5" />
                         
-                        <!-- Khe trang trí sọc ngang gỗ óc chó sẫm cực kỳ thẩm mỹ bên trái -->
-                        <g fill="#1a120b">
+                        <!-- Khe trang trí sọc ngang gỗ sồi vàng rực rỡ dưới nắng bên trái -->
+                        <g fill="url(#woodGrad)">
                             <rect x="125" y="145" width="25" height="8" rx="1" />
                             <rect x="125" y="165" width="25" height="8" rx="1" />
                             <rect x="125" y="185" width="25" height="8" rx="1" />
@@ -124,11 +142,11 @@
 
                         <!-- 2. Cụm nhà bên phải: Khối lầu nằm ngang lửng -->
                         <rect x="285" y="155" width="185" height="185" fill="url(#wallDarkBlue)" stroke="#0f172a" stroke-width="1.2" />
-                        <!-- Nóc mái tối sẫm -->
-                        <rect x="280" y="147" width="195" height="8" fill="#111827" rx="1.5" />
+                        <!-- Nóc mái tối sẫm màu Charcoal hiện đại -->
+                        <rect x="280" y="147" width="195" height="8" fill="#334155" rx="1.5" />
                         
-                        <!-- Khe trang trí sọc ngang gỗ sẫm cực kỳ thẩm mỹ bên phải -->
-                        <g fill="#1a120b">
+                        <!-- Khe trang trí sọc ngang gỗ sồi vàng rực rỡ dưới nắng bên phải -->
+                        <g fill="url(#woodGrad)">
                             <rect x="470" y="175" width="25" height="8" rx="1" />
                             <rect x="470" y="195" width="25" height="8" rx="1" />
                             <rect x="470" y="215" width="25" height="8" rx="1" />
@@ -136,8 +154,8 @@
                             <rect x="470" y="255" width="25" height="8" rx="1" />
                         </g>
 
-                        <!-- Cửa nhà để xe (Garage) màu xám đậm có điểm nhấn sáng -->
-                        <rect x="165" y="260" width="105" height="80" fill="#18222f" stroke="#0f172a" stroke-width="1.2" rx="2" />
+                        <!-- Cửa nhà để xe (Garage) màu kim loại bạc-xám cao cấp -->
+                        <rect x="165" y="260" width="105" height="80" fill="url(#garageGrad)" stroke="#0f172a" stroke-width="1.2" rx="2" />
                         <!-- Các đường gờ dọc/ngang cửa cuốn -->
                         <g stroke="#0f172a" stroke-width="1.5">
                             <line x1="165" y1="272" x2="270" y2="272" />
@@ -148,8 +166,8 @@
                             <line x1="165" y1="332" x2="270" y2="332" />
                         </g>
 
-                        <!-- Hàng rào cột sắt đen mờ tinh tế ở giữa nhà -->
-                        <g fill="#111827">
+                        <!-- Hàng rào cột sắt màu xám than hiện đại tinh tế ở giữa nhà -->
+                        <g fill="#1e293b">
                             <rect x="285" y="255" width="6" height="85" />
                             <rect x="345" y="255" width="6" height="85" />
                             <!-- Các thanh ngang -->
@@ -162,23 +180,35 @@
                             <rect x="291" y="334" width="54" height="4" />
                         </g>
 
-                        <!-- 3. Cụm cửa sổ phát sáng lung linh cực mạnh trên nền trời tờ mờ sáng -->
+                        <!-- 3. Cụm cửa sổ kính phản quang xanh trời trong suốt cao cấp -->
                         
                         <!-- Cửa sổ đứng tầng 2 (Khối Trái) -->
-                        <rect x="195" y="145" width="48" height="95" fill="url(#windowWarm)" stroke="#0f172a" stroke-width="2.5" rx="2" />
-                        <line x1="219" y1="145" x2="219" y2="240" stroke="#0f172a" stroke-width="2.5" />
+                        <g>
+                            <rect x="195" y="145" width="48" height="95" fill="url(#windowGlass)" stroke="#0f172a" stroke-width="2.5" rx="2" />
+                            <!-- Dải phản quang nghiêng màu trắng sang trọng -->
+                            <line x1="200" y1="150" x2="238" y2="188" stroke="#ffffff" stroke-width="1.5" opacity="0.4" />
+                            <line x1="205" y1="180" x2="238" y2="213" stroke="#ffffff" stroke-width="1.5" opacity="0.4" />
+                            <line x1="219" y1="145" x2="219" y2="240" stroke="#0f172a" stroke-width="2.5" />
+                        </g>
                         
                         <!-- Cửa sổ ngang tầng 2 (Khối Phải) -->
-                        <rect x="315" y="180" width="75" height="60" fill="url(#windowWarm)" stroke="#0f172a" stroke-width="2.5" rx="2" />
-                        <line x1="365" y1="180" x2="365" y2="240" stroke="#0f172a" stroke-width="2.5" />
-                        <line x1="315" y1="195" x2="365" y2="195" stroke="#0f172a" stroke-width="1.5" />
+                        <g>
+                            <rect x="315" y="180" width="75" height="60" fill="url(#windowGlass)" stroke="#0f172a" stroke-width="2.5" rx="2" />
+                            <!-- Dải phản quang nghiêng màu trắng sang trọng -->
+                            <line x1="320" y1="185" x2="360" y2="225" stroke="#ffffff" stroke-width="1.5" opacity="0.4" />
+                            <line x1="330" y1="205" x2="355" y2="230" stroke="#ffffff" stroke-width="1.5" opacity="0.4" />
+                            <line x1="365" y1="180" x2="365" y2="240" stroke="#0f172a" stroke-width="2.5" />
+                            <line x1="315" y1="195" x2="365" y2="195" stroke="#0f172a" stroke-width="1.5" />
+                        </g>
 
                         <!-- CỬA CHÍNH VÀO NHÀ (Nơi tương tác để bước vào nhà) -->
                         <g class="glow-door" id="svg-front-door" style="cursor: pointer;">
                             <!-- Thềm bước chân gỗ sẫm -->
-                            <rect x="385" y="336" width="60" height="4" fill="#111827" rx="1" />
-                            <!-- Cánh cửa phát sáng sắc vàng rực rỡ nổi bật cực độ -->
-                            <rect x="390" y="255" width="50" height="85" fill="url(#windowWarm)" stroke="#0f172a" stroke-width="2.5" rx="2" />
+                            <rect x="385" y="336" width="60" height="4" fill="#1e293b" rx="1" />
+                            <!-- Cánh cửa gỗ Teak sang trọng lịch lãm -->
+                            <rect x="390" y="255" width="50" height="85" fill="url(#woodGrad)" stroke="#0f172a" stroke-width="2.5" rx="2" />
+                            <!-- Dải kính dọc phản quang hiện đại trên cánh cửa tăng độ sang xịn -->
+                            <rect x="424" y="260" width="8" height="75" fill="url(#windowGlass)" stroke="#0f172a" stroke-width="1" rx="0.5" opacity="0.95" />
                             <!-- Tay nắm cửa thanh mảnh -->
                             <rect x="397" y="288" width="2.5" height="15" fill="#0f172a" rx="0.5" />
                             
@@ -192,43 +222,43 @@
 
                         <!-- 4. Cảnh quan xung quanh (Cây xanh tươi tắn & Đèn đường ấm áp) -->
                         
-                        <!-- Cây xanh bên trái ngôi nhà có sắc lá tươi nổi bật hơn -->
+                        <!-- Cây xanh bên trái ngôi nhà có sắc lá tươi nổi bật hơn ban ngày -->
                         <g>
                             <!-- Thân cây gỗ -->
                             <rect x="65" y="220" width="12" height="120" fill="#3a251c" rx="2" />
-                            <!-- Tán lá tròn màu xanh biển sâu đầy tính nghệ thuật -->
-                            <circle cx="50" cy="190" r="30" fill="#0b3c5d" />
-                            <circle cx="85" cy="185" r="28" fill="#1d2731" />
-                            <circle cx="70" cy="160" r="35" fill="#328cc1" opacity="0.9" />
+                            <!-- Tán lá tròn màu xanh ngọc bích đầy sinh khí dưới ánh mặt trời -->
+                            <circle cx="50" cy="190" r="30" fill="#14532d" />
+                            <circle cx="85" cy="185" r="28" fill="#15803d" />
+                            <circle cx="70" cy="160" r="35" fill="#4ade80" opacity="0.95" />
                         </g>
-                        <!-- Khóm bụi cỏ nhỏ trang trí -->
-                        <path d="M 30 340 Q 42 322 55 330 Q 70 315 88 340 Z" fill="#1b2538" />
+                        <!-- Khóm bụi cỏ nhỏ trang trí màu xanh tươi -->
+                        <path d="M 30 340 Q 42 322 55 330 Q 70 315 88 340 Z" fill="#166534" />
 
-                        <!-- Đèn đường cổ điển ấm áp ở bên phải ngôi nhà -->
+                        <!-- Đèn đường cổ điển sang trọng bên phải ngôi nhà -->
                         <g>
                             <!-- Cột đèn -->
                             <rect x="528" y="240" width="3" height="100" fill="#111827" />
                             <rect x="523" y="337" width="13" height="3" fill="#111827" />
                             <!-- Giá đỡ đèn mạ đen -->
                             <polygon points="522,240 537,240 534,228 525,228" fill="#111827" />
-                            <!-- Bóng đèn phát sáng vàng rực -->
-                            <polygon points="523,228 536,228 533,212 526,212" fill="url(#windowWarm)" stroke="#111827" stroke-width="1" />
+                            <!-- Bóng đèn tắt ban ngày (chuyển màu trắng xám passive thanh lịch) -->
+                            <polygon points="523,228 536,228 533,212 526,212" fill="#e2e8f0" stroke="#111827" stroke-width="1" opacity="0.9" />
                             <!-- Chóp đỉnh đèn -->
                             <polygon points="526,212 533,212 529.5,204" fill="#111827" />
                         </g>
-                        <!-- Khóm bụi cỏ nhỏ trang trí chân đèn -->
-                        <path d="M 505 340 Q 515 325 528 332 Q 538 322 550 340 Z" fill="#1b2538" />
+                        <!-- Khóm bụi cỏ nhỏ trang trí chân đèn màu xanh tươi -->
+                        <path d="M 505 340 Q 515 325 528 332 Q 538 322 550 340 Z" fill="#166534" />
 
-                        <!-- Mặt đường nhựa dưới tiền cảnh màu xanh sẫm -->
-                        <rect x="0" y="352" width="600" height="48" fill="#111622" />
-                        <!-- Dải làn đường màu xám xanh -->
-                        <line x1="20" y1="375" x2="60" y2="375" stroke="#232b3c" stroke-width="2.5" stroke-dasharray="10 10" />
-                        <line x1="100" y1="375" x2="140" y2="375" stroke="#232b3c" stroke-width="2.5" stroke-dasharray="10 10" />
-                        <line x1="180" y1="375" x2="220" y2="375" stroke="#232b3c" stroke-width="2.5" stroke-dasharray="10 10" />
-                        <line x1="260" y1="375" x2="300" y2="375" stroke="#232b3c" stroke-width="2.5" stroke-dasharray="10 10" />
-                        <line x1="340" y1="375" x2="380" y2="375" stroke="#232b3c" stroke-width="2.5" stroke-dasharray="10 10" />
-                        <line x1="420" y1="375" x2="460" y2="375" stroke="#232b3c" stroke-width="2.5" stroke-dasharray="10 10" />
-                        <line x1="500" y1="375" x2="540" y2="375" stroke="#232b3c" stroke-width="2.5" stroke-dasharray="10 10" />
+                        <!-- Mặt đường nhựa dưới tiền cảnh màu xám asphalt ban ngày -->
+                        <rect x="0" y="352" width="600" height="48" fill="#475569" />
+                        <!-- Dải làn đường màu xám trắng ban ngày rõ nét -->
+                        <line x1="20" y1="375" x2="60" y2="375" stroke="#e2e8f0" stroke-width="2.5" stroke-dasharray="10 10" opacity="0.8" />
+                        <line x1="100" y1="375" x2="140" y2="375" stroke="#e2e8f0" stroke-width="2.5" stroke-dasharray="10 10" opacity="0.8" />
+                        <line x1="180" y1="375" x2="220" y2="375" stroke="#e2e8f0" stroke-width="2.5" stroke-dasharray="10 10" opacity="0.8" />
+                        <line x1="260" y1="375" x2="300" y2="375" stroke="#e2e8f0" stroke-width="2.5" stroke-dasharray="10 10" opacity="0.8" />
+                        <line x1="340" y1="375" x2="380" y2="375" stroke="#e2e8f0" stroke-width="2.5" stroke-dasharray="10 10" opacity="0.8" />
+                        <line x1="420" y1="375" x2="460" y2="375" stroke="#e2e8f0" stroke-width="2.5" stroke-dasharray="10 10" opacity="0.8" />
+                        <line x1="500" y1="375" x2="540" y2="375" stroke="#e2e8f0" stroke-width="2.5" stroke-dasharray="10 10" opacity="0.8" />
                     </svg>
                 </div>
 
