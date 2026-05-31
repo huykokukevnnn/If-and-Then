@@ -1988,3 +1988,45 @@ main {
     }
 }
 
+/* --- HOẠT ẢNH CON CHIM BAY NGANG CỬA SỔ BAN CÔNG (MỖI 10 GIÂY) --- */
+.flying-bird {
+    transform: translate(790px, 140px) scale(0);
+    animation: birdFlyAcross 10s cubic-bezier(0.25, 0.46, 0.45, 0.94) infinite;
+    transform-origin: center;
+}
+
+@keyframes birdFlyAcross {
+    /* 0% đến 40% (4 giây): Chim bay vút qua bầu trời từ trái sang phải, đập cánh và lượn sóng */
+    0% {
+        transform: translate(795px, 150px) scale(0.65, 0.65);
+    }
+    5% {
+        transform: translate(820px, 135px) scale(0.65, 0.25); /* Đập cánh nhẹ lên */
+    }
+    10% {
+        transform: translate(845px, 145px) scale(0.65, 0.65);
+    }
+    15% {
+        transform: translate(870px, 130px) scale(0.65, 0.25); /* Đập cánh nhẹ */
+    }
+    20% {
+        transform: translate(895px, 140px) scale(0.65, 0.65);
+    }
+    25% {
+        transform: translate(920px, 125px) scale(0.65, 0.25); /* Đập cánh nhẹ */
+    }
+    30% {
+        transform: translate(945px, 135px) scale(0.65, 0.65);
+    }
+    35% {
+        transform: translate(970px, 145px) scale(0.65, 0.25);
+    }
+    40% {
+        transform: translate(995px, 150px) scale(0.65, 0.65);
+    }
+    /* 40.001% đến 100% (6 giây còn lại): Chim ẩn ngoài khung hình để chờ chu kỳ tiếp theo */
+    40.001%, 100% {
+        transform: translate(795px, 150px) scale(0);
+    }
+}
+
