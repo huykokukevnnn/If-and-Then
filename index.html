@@ -5,7 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
     <title>AI Smart Home - Game Giáo Dục Trải Nghiệm & Lập Trình AI</title>
     <meta name="description" content="Trò chơi mini game tương tác giáo dục học sinh về cách thức hoạt động và lập trình Trí tuệ Nhân tạo (AI) ứng dụng vào nhà thông minh Smart Home.">
-    <link rel="stylesheet" href="styles.css?v=7.0">
+    <link rel="stylesheet" href="styles.css?v=8.0">
 </head>
 <body>
     <div class="star-bg"></div>
@@ -312,7 +312,26 @@
                                 </g>
                                 <!-- Con chim bay ngang trời được clip path để không bị tràn ra ngoài cửa sổ -->
                                 <g clip-path="url(#balconyClip)">
-                                    <path class="flying-bird" d="M 0 4 Q 5 -2 10 4 Q 15 -2 20 4 Q 10 1 0 4 Z" fill="#334155" />
+                                    <path d="M 0 4 Q 5 -2 10 4 Q 15 -2 20 4 Q 10 1 0 4 Z" fill="#334155" transform="translate(790,140)">
+                                        <animateTransform 
+                                            attributeName="transform" 
+                                            type="translate" 
+                                            values="790,140; 830,130; 870,145; 910,125; 950,135; 990,145; 790,-50; 790,-50" 
+                                            keyTimes="0; 0.08; 0.16; 0.24; 0.32; 0.40; 0.401; 1" 
+                                            dur="10s" 
+                                            repeatCount="indefinite" 
+                                            additive="sum"
+                                        />
+                                        <animateTransform 
+                                            attributeName="transform" 
+                                            type="scale" 
+                                            values="1,1; 1,0.3; 1,1; 1,0.3; 1,1; 1,0.3; 1,1; 1,0.3; 1,1; 1,1" 
+                                            keyTimes="0; 0.05; 0.10; 0.15; 0.20; 0.25; 0.30; 0.35; 0.40; 1" 
+                                            dur="10s" 
+                                            repeatCount="indefinite" 
+                                            additive="sum"
+                                        />
+                                    </path>
                                 </g>
                                 <!-- Khung lan can ban công sắt mỹ thuật -->
                                 <line x1="820" y1="280" x2="970" y2="280" stroke="#475569" stroke-width="3" />
