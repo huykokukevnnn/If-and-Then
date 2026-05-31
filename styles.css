@@ -1731,8 +1731,12 @@ main {
 }
 
 .device-tv-on .tv-screen-noise {
-    opacity: 1;
+    opacity: 0.15; /* Vân nhiễu sóng mỏng phủ nhẹ lên video cho chân thực */
     animation: tvNoiseAnim 0.08s infinite;
+}
+
+.device-tv-on #tvVideo {
+    opacity: 1 !important;
 }
 
 .device-tv-on .tv-indicator-led {

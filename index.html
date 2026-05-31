@@ -492,6 +492,12 @@
                                 <rect x="391" y="151" width="218" height="128" rx="6" fill="#090d16" />
                                 <!-- Màn hình TV phản chiếu thủy tinh lộng lẫy -->
                                 <rect x="395" y="155" width="210" height="120" rx="4" fill="#1e293b" class="tv-screen" />
+                                <!-- Video Clip lập trình ma trận chạy lặp khi bật TV -->
+                                <foreignObject x="395" y="155" width="210" height="120">
+                                    <video id="tvVideo" width="210" height="120" style="object-fit: cover; border-radius: 4px; width: 100%; height: 100%; opacity: 0; transition: opacity 0.4s ease; pointer-events: none;" loop muted playsinline>
+                                        <source src="https://assets.mixkit.co/videos/preview/mixkit-matrix-style-green-code-flowing-down-42211-large.mp4" type="video/mp4">
+                                    </video>
+                                </foreignObject>
                                 <!-- Lớp nhiễu sóng trắng đen khi mở TV -->
                                 <rect x="395" y="155" width="210" height="120" rx="4" fill="#ffffff" filter="url(#tvNoiseFilter)" class="tv-screen-noise" opacity="0" />
                                 <!-- Hiệu ứng thủy tinh phản chiếu Apple Style tinh xảo -->

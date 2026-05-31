@@ -692,6 +692,18 @@ const App = {
             }
         }
 
+        if (devName === 'tv') {
+            const tvVideo = document.getElementById('tvVideo');
+            if (tvVideo) {
+                if (targetState) {
+                    tvVideo.play().catch(e => console.log("Video auto-play blocked: ", e));
+                } else {
+                    tvVideo.pause();
+                    tvVideo.currentTime = 0;
+                }
+            }
+        }
+
         this.updateDashboardUI();
 
         // Tự động đồng bộ hóa trạng thái nút xanh ở tab Test
@@ -1315,6 +1327,11 @@ const App = {
         GameData.commandsTestedSet.clear();
         GameData.connections = {};
         SoundManager.stopRoyaltyFreeMusic();
+        const tvVideo = document.getElementById('tvVideo');
+        if (tvVideo) {
+            tvVideo.pause();
+            tvVideo.currentTime = 0;
+        }
 
         // Xóa các CSS Class kích hoạt trong hình vẽ SVG thiết bị
         for (let dev in GameData.deviceStates) {
