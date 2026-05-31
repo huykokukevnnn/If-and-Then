@@ -717,6 +717,38 @@ const App = {
             }
         }
 
+        if (devName === 'fridge') {
+            // Xóa bộ hẹn giờ cũ nếu có
+            if (this.fridgeTimer) {
+                clearTimeout(this.fridgeTimer);
+                this.fridgeTimer = null;
+            }
+
+            if (targetState) {
+                // Nếu tủ lạnh đang mở, đặt hẹn giờ 5 giây tự động đóng & cảnh báo
+                this.fridgeTimer = setTimeout(() => {
+                    // Tự động đóng tủ lạnh
+                    this.toggleDevice('fridge', false);
+                    
+                    // Phát tiếng cảnh báo động cơ (còi báo động triple-beep sawtooth)
+                    SoundManager.playBeep(880, 0.12, 'sawtooth');
+                    setTimeout(() => SoundManager.playBeep(880, 0.12, 'sawtooth'), 180);
+                    setTimeout(() => SoundManager.playBeep(880, 0.12, 'sawtooth'), 360);
+
+                    // LUNA đưa ra tin nhắn cảnh báo
+                    const alertMsg = "Trợ Lý LUNA: Cảnh báo 🚨! Cửa tủ lạnh đã mở quá 5 giây. Tôi đã tự động đóng khít tủ lạnh để tiết kiệm điện năng.";
+                    this.appendChatMessage(alertMsg, 'luna');
+                    
+                    // Phát giọng nói LUNA phản hồi (nếu có Web Speech)
+                    if ('speechSynthesis' in window) {
+                        const utterance = new SpeechSynthesisUtterance("Cảnh báo. Tủ lạnh mở quá lâu đã tự động đóng.");
+                        utterance.lang = 'vi-VN';
+                        window.speechSynthesis.speak(utterance);
+                    }
+                }, 5000);
+            }
+        }
+
         this.updateDashboardUI();
 
         // Tự động đồng bộ hóa trạng thái nút xanh ở tab Test
@@ -1340,6 +1372,10 @@ const App = {
         GameData.commandsTestedSet.clear();
         GameData.connections = {};
         SoundManager.stopRoyaltyFreeMusic();
+        if (this.fridgeTimer) {
+            clearTimeout(this.fridgeTimer);
+            this.fridgeTimer = null;
+        }
         const tvVideo = document.getElementById('tvVideo');
         if (tvVideo) {
             tvVideo.pause();
