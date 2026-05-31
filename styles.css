@@ -1827,8 +1827,8 @@ main {
     100% { transform: translate(100px, -70px) scale(1.25) rotate(-15deg); opacity: 0; }
 }
 
-/* --- TỰ ĐỘNG ĐIỀU CHỈNH TỶ LỆ DỌC CHO MÀN HÌNH TABLET/LAPTOP (MAX-HEIGHT < 950PX) --- */
-@media (max-height: 950px) {
+/* --- TỰ ĐỘNG ĐIỀU CHỈNH TỶ LỆ DỌC CHO MÀN HÌNH TABLET/LAPTOP (MAX-HEIGHT < 780PX) --- */
+@media (max-height: 780px) {
     /* Header & Main layout */
     header {
         padding: 0.5rem 1.5rem !important;
@@ -1869,13 +1869,13 @@ main {
 
     /* Giai đoạn 1 & Kiểm thử: Khung căn phòng (Yellow box) */
     .room-viewport {
-        min-height: 290px !important;
+        min-height: 330px !important;
     }
     .room-viewport-header {
         padding: 0.5rem 1rem 0.35rem 1rem !important;
     }
     .inner-room-svg {
-        max-height: 230px !important;
+        max-height: 270px !important;
     }
 
     /* Bảng giao tiếp AI (Red box) */
