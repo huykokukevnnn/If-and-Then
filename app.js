@@ -151,41 +151,25 @@ const GameData = {
     },
 
     dashboardMetrics: {
-        temp: 30,
-        air: "Ngột ngạt",
-        lock: "ĐANG KHÓA",
-        speaker: "ĐANG TẮT"
+        totalCommands: 0,
+        successCount: 0,
+        activeDevices: 0
     },
+
+    // --- MỚI: Trạng thái môi trường & tự động hóa ---
+    isDaytime: true,
+    isProgrammed: false,
+    environmentInterval: null,
+    trashItems: [],
+    robotCleaning: false,
+    robotTarget: null,
 
     commandsTestedCount: 0,
     commandsTestedSet: new Set(),
-    requiredCommandsToUnlock: 3,
+    requiredCommandsToUnlock: 3
 
     // Giai đoạn 2: Bảng dữ liệu thẻ cột Trái & Phải (Scrambled & Mapped to 8 Devices)
-    leftCards: [
-        { id: "L1", text: "Bật quạt thổi mát", icon: "💨" },
-        { id: "L2", text: "Hôm nay trời nóng quá", icon: "☀️" },
-        { id: "L3", text: "Tối quá không thấy đường", icon: "🌙" },
-        { id: "L4", text: "Hôm nay ăn gì nhỉ?", icon: "🍎" },
-        { id: "L5", text: "Hãy mở cửa kính ban công", icon: "🚪" },
-        { id: "L6", text: "Sàn nhà dơ quá đi", icon: "🧹" },
-        { id: "L7", text: "Bật tivi xem tin tức", icon: "📺" },
-        { id: "L8", text: "Bật loa phát nhạc giải trí", icon: "🎵" }
-    ],
-
-    rightCards: [
-        { id: "R1", actionKey: "fan_on", text: "Cánh quạt quay thổi gió", desc: "Quạt đứng quay tít" },
-        { id: "R2", actionKey: "ac_on", text: "Điều hòa thổi gió mát lạnh", desc: "Máy lạnh thổi sóng gió" },
-        { id: "R3", actionKey: "light_on", text: "Bật đèn LED áp tường thắp sáng", desc: "Hai đèn LED áp tường thắp sáng" },
-        { id: "R4", actionKey: "fridge_open", text: "Mở cửa tủ lạnh tìm đồ ăn", desc: "Cửa tủ lạnh 2 cánh mở lật phát sáng" },
-        { id: "R5", actionKey: "glassdoor_open", text: "Cửa kính trượt mở ra ban công", desc: "Hai cánh kính trượt mở sang hai bên" },
-        { id: "R6", actionKey: "vacuum_on", text: "Robot chạy trượt đi hút bụi", desc: "Robot hút bụi trượt đi dọn dẹp" },
-        { id: "R7", actionKey: "tv_on", text: "Mở màn hình Tivi nhiễu sóng", desc: "Tivi hoạt động hiển thị nhiễu trắng đen" },
-        { id: "R8", actionKey: "speaker_on", text: "Loa dạng trụ quẩy nhạc nốt bay", desc: "Cột LED loa sáng và nốt nhạc bay lên" }
-    ],
-
-    // Mối liên kết lập trình do học sinh nối (Left ID -> Right ID)
-    connections: {} // Cấu trúc: { "L1": "R3", "L2": "R1", ... }
+     // Cấu trúc: { "L1": "R3", "L2": "R1", ... }
 };
 
 // --- 3. KHỞI TẠO VÀ BẮT ĐẦU APP ---
@@ -202,10 +186,14 @@ const App = {
     init() {
         this.bindGlobalEvents();
         this.initPhase1();
-        this.initPhase2();
+        
         
         // Mặc định cập nhật giao diện Dashboard
         this.updateDashboardUI();
+
+        // --- BẮT ĐẦU CHU KỲ MÔI TRƯỜNG & DRAG DROP ---
+        this.startEnvironmentLoop();
+        this.setupTrashDragAndDrop();
     },
 
     // Quản lý chuyển đổi màn hình game mượt mà
@@ -237,7 +225,7 @@ const App = {
             step1.classList.remove('active');
             step2.classList.add('active');
             step2.classList.remove('completed');
-            this.updateConnectionLines(); // Vẽ lại dây nối phòng trường hợp kích thước thay đổi
+             // Vẽ lại dây nối phòng trường hợp kích thước thay đổi
         } else if (screenId === 'testing') {
             step1.classList.add('completed');
             step2.classList.add('completed');
@@ -783,7 +771,7 @@ const App = {
     // --- GIAI ĐOẠN 2: TỰ TAY LẬP TRÌNH AI MỚI ---
     initPhase2() {
         // Render danh sách thẻ hai cột trái và phải
-        this.renderMatchingCards();
+        
 
         // Nút xóa tất cả kết nối
         document.getElementById('btn-clear-connections').addEventListener('click', () => {
@@ -826,459 +814,13 @@ const App = {
         this.setupDragAndDropLogic();
     },
 
-    renderMatchingCards() {
-        const leftCol = document.getElementById('left-cards-column');
-        const rightCol = document.getElementById('right-cards-column');
-        
-        leftCol.innerHTML = '';
-        rightCol.innerHTML = '';
-
-        // Thuật toán xáo trộn Fisher-Yates ngẫu nhiên khoa học
-        const shuffle = (array) => {
-            const arr = [...array];
-            for (let i = arr.length - 1; i > 0; i--) {
-                const j = Math.floor(Math.random() * (i + 1));
-                [arr[i], arr[j]] = [arr[j], arr[i]];
-            }
-            return arr;
-        };
-
-        // Xáo trộn độc lập 2 cột để tạo sự ngẫu nhiên tối đa đúng như yêu cầu
-        const shuffledLeft = shuffle(GameData.leftCards);
-        const shuffledRight = shuffle(GameData.rightCards);
-
-        // Tạo thẻ bên trái (Speech Commands)
-        shuffledLeft.forEach(card => {
-            const cardDiv = document.createElement('div');
-            cardDiv.className = 'matching-card';
-            cardDiv.id = `card-${card.id}`;
-            cardDiv.setAttribute('data-side', 'left');
-            cardDiv.setAttribute('data-id', card.id);
-            
-            cardDiv.innerHTML = `
-                <div class="card-content-desc">
-                    <span style="font-size: 1.15rem; margin-right: 6px;">${card.icon}</span>
-                    <span>"${card.text}"</span>
-                </div>
-                <div class="connector-dot" id="dot-${card.id}" data-id="${card.id}" data-side="left"></div>
-            `;
-            leftCol.appendChild(cardDiv);
-        });
-
-        // Tạo thẻ bên phải (Device Actions)
-        shuffledRight.forEach(card => {
-            const cardDiv = document.createElement('div');
-            cardDiv.className = 'matching-card';
-            cardDiv.id = `card-${card.id}`;
-            cardDiv.setAttribute('data-side', 'right');
-            cardDiv.setAttribute('data-id', card.id);
-            cardDiv.setAttribute('data-key', card.actionKey);
-            
-            cardDiv.innerHTML = `
-                <div class="card-content-desc">
-                    <div style="font-size:0.9rem; font-weight:700;">${card.text}</div>
-                    <div style="font-size:0.75rem; color:rgba(15,23,42,0.45); margin-top:2px;">${card.desc}</div>
-                </div>
-                <div class="connector-dot" id="dot-${card.id}" data-id="${card.id}" data-side="right"></div>
-            `;
-            rightCol.appendChild(cardDiv);
-        });
-    },
-
-    // Quản lý kéo thả mượt mà trên PC (Mouse) và Tablet (Touch)
-    setupDragAndDropLogic() {
-        const container = document.getElementById('matching-drag-container');
-        const svg = document.getElementById('connections-svg');
-
-        // Lắng nghe sự kiện bắt đầu ấn nút hoặc chạm ngón tay vào chốt Trái
-        container.addEventListener('mousedown', (e) => this.handleDragStart(e, false));
-        container.addEventListener('touchstart', (e) => this.handleDragStart(e, true), { passive: false });
-
-        // Lắng nghe di chuyển kéo dây
-        window.addEventListener('mousemove', (e) => this.handleDragMove(e, false));
-        window.addEventListener('touchmove', (e) => this.handleDragMove(e, true), { passive: false });
-
-        // Lắng nghe thả tay ra kết thúc kéo
-        window.addEventListener('mouseup', (e) => this.handleDragEnd(e, false));
-        window.addEventListener('touchend', (e) => this.handleDragEnd(e, true));
-    },
-
-    handleDragStart(e, isTouch) {
-        const target = e.target;
-        // Chỉ cho phép bắt đầu kéo từ Chốt Tròn thuộc cột TRÁI
-        if (!target.classList.contains('connector-dot') || target.getAttribute('data-side') !== 'left') {
-            return;
-        }
-
-        if (isTouch) e.preventDefault(); // Ngăn cuộn trang trên tablet khi đang kéo dây
-
-        const dotId = target.getAttribute('data-id');
-        
-        // Nếu chốt trái này đã có dây nối trước đó, hãy xóa dây cũ đó đi
-        if (GameData.connections[dotId]) {
-            delete GameData.connections[dotId];
-            this.playActionSound('click');
-            this.updateConnectionLines();
-        }
-
-        const coords = this.getDotCenter(target);
-
-        this.activeDragDot = target;
-        this.dragStartCoords = coords;
-
-        // Phát tiếng beep nhẹ khi bắt đầu kéo
-        SoundManager.playBeep(650, 0.05, 'sine');
-
-        // Tạo sợi dây mờ vẽ nháp ban đầu
-        this.createTempCable(coords.x, coords.y);
-    },
-
-    handleDragMove(e, isTouch) {
-        if (!this.activeDragDot) return;
-        if (isTouch) e.preventDefault(); // Ngăn cuộn màn hình khi đang vẽ dây
-
-        const clientX = isTouch ? e.touches[0].clientX : e.clientX;
-        const clientY = isTouch ? e.touches[0].clientY : e.clientY;
-        
-        const container = document.getElementById('matching-drag-container');
-        const containerRect = container.getBoundingClientRect();
-        
-        const currX = clientX - containerRect.left;
-        const currY = clientY - containerRect.top;
-
-        // Vẽ cập nhật uốn lượn Bezier cho dây kéo nháp
-        this.updateTempCable(this.dragStartCoords.x, this.dragStartCoords.y, currX, currY);
-
-        // Hiệu ứng "hút dính nam châm (snapping)" nếu rê chuột đến gần chốt phải
-        const dotsRight = document.querySelectorAll('.matching-column.right .connector-dot');
-        dotsRight.forEach(dot => {
-            const dotCoords = this.getDotCenter(dot);
-            const dist = Math.hypot(currX - dotCoords.x, currY - dotCoords.y);
-            
-            if (dist < 35) { // Snapping range 35px
-                dot.style.transform = 'scale(1.4)';
-                dot.style.backgroundColor = '#ffffff';
-            } else {
-                dot.style.transform = '';
-                dot.style.backgroundColor = '';
-            }
-        });
-    },
-
-    handleDragEnd(e, isTouch) {
-        if (!this.activeDragDot) return;
-
-        // Tháo dây nháp
-        if (this.tempCable) {
-            this.tempCable.remove();
-            this.tempCable = null;
-        }
-
-        // Tìm chốt bên phải gần nhất để nối
-        const leftDotId = this.activeDragDot.getAttribute('data-id');
-        let clientX, clientY;
-
-        if (isTouch) {
-            clientX = e.changedTouches[0].clientX;
-            clientY = e.changedTouches[0].clientY;
-        } else {
-            clientX = e.clientX;
-            clientY = e.clientY;
-        }
-
-        const container = document.getElementById('matching-drag-container');
-        const containerRect = container.getBoundingClientRect();
-        const endX = clientX - containerRect.left;
-        const endY = clientY - containerRect.top;
-
-        // Quét tìm chốt phải snap gần nhất
-        const dotsRight = document.querySelectorAll('.matching-column.right .connector-dot');
-        let targetRightDot = null;
-        let minDistance = 35; // Khoảng cách snap nam châm
-
-        dotsRight.forEach(dot => {
-            const dotCoords = this.getDotCenter(dot);
-            const dist = Math.hypot(endX - dotCoords.x, endY - dotCoords.y);
-            
-            // Hoàn trả thiết kế của dot
-            dot.style.transform = '';
-            dot.style.backgroundColor = '';
-
-            if (dist < minDistance) {
-                targetRightDot = dot;
-                minDistance = dist;
-            }
-        });
-
-        if (targetRightDot) {
-            const rightDotId = targetRightDot.getAttribute('data-id');
-            
-            // Ghi nhận liên kết thành công (đảm bảo 1-1, tháo liên kết cũ nếu có)
-            for (let leftKey in GameData.connections) {
-                if (GameData.connections[leftKey] === rightDotId) {
-                    delete GameData.connections[leftKey];
-                }
-            }
-
-            GameData.connections[leftDotId] = rightDotId;
-            SoundManager.playChime();
-        } else {
-            // Thả hụt, tháo dây không lưu
-            SoundManager.playBeep(350, 0.1, 'sine');
-        }
-
-        this.activeDragDot = null;
-        this.dragStartCoords = null;
-
-        // Vẽ lại toàn bộ dây cáp đã lưu
-        this.updateConnectionLines();
-    },
-
-    getDotCenter(dotElement) {
-        const container = document.getElementById('matching-drag-container');
-        const containerRect = container.getBoundingClientRect();
-        const dotRect = dotElement.getBoundingClientRect();
-        
-        return {
-            x: (dotRect.left + dotRect.width / 2) - containerRect.left,
-            y: (dotRect.top + dotRect.height / 2) - containerRect.top
-        };
-    },
-
-    createTempCable(x1, y1) {
-        const svg = document.getElementById('connections-svg');
-        const path = document.createElementNS('http://www.w3.org/2000/svg', 'path');
-        path.setAttribute('class', 'neon-cable temp');
-        path.setAttribute('d', `M ${x1} ${y1} C ${x1 + 60} ${y1}, ${x1 + 60} ${y1}, ${x1} ${y1}`);
-        svg.appendChild(path);
-        this.tempCable = path;
-    },
-
-    updateTempCable(x1, y1, x2, y2) {
-        if (!this.tempCable) return;
-        const controlOffset = Math.max(80, Math.abs(x2 - x1) * 0.5);
-        const d = `M ${x1} ${y1} C ${x1 + controlOffset} ${y1}, ${x2 - controlOffset} ${y2}, ${x2} ${y2}`;
-        this.tempCable.setAttribute('d', d);
-    },
-
-    updateConnectionLines() {
-        const svg = document.getElementById('connections-svg');
-        // Xóa sạch các đường dẫn cũ
-        svg.innerHTML = '';
-
-        // Gỡ các class active connected cũ của thẻ
-        document.querySelectorAll('.matching-card').forEach(card => {
-            card.classList.remove('connected-left', 'connected-right');
-        });
-        document.querySelectorAll('.connector-dot').forEach(dot => {
-            dot.classList.remove('connected');
-        });
-
-        let activeCount = 0;
-
-        // Duyệt vẽ từng liên kết được lưu trữ
-        for (let leftId in GameData.connections) {
-            const rightId = GameData.connections[leftId];
-            
-            const dotLeft = document.getElementById(`dot-${leftId}`);
-            const dotRight = document.getElementById(`dot-${rightId}`);
-            
-            if (dotLeft && dotRight) {
-                activeCount++;
-                
-                // Đánh dấu thiết kế thẻ đã được nối dây
-                document.getElementById(`card-${leftId}`).classList.add('connected-left');
-                document.getElementById(`card-${rightId}`).classList.add('connected-right');
-                
-                dotLeft.classList.add('connected');
-                dotRight.classList.add('connected');
-
-                // Lấy tọa độ hai tâm chốt tròn
-                const start = this.getDotCenter(dotLeft);
-                const end = this.getDotCenter(dotRight);
-
-                // Đường vẽ neon
-                const path = document.createElementNS('http://www.w3.org/2000/svg', 'path');
-                path.setAttribute('class', 'neon-cable');
-                
-                // Uốn cong sợi dây sang trọng
-                const controlOffset = Math.max(100, Math.abs(end.x - start.x) * 0.6);
-                const d = `M ${start.x} ${start.y} C ${start.x + controlOffset} ${start.y}, ${end.x - controlOffset} ${end.y}, ${end.x} ${end.y}`;
-                
-                path.setAttribute('d', d);
-                
-                // Phối màu sắc gradient sặc sỡ cho mỗi sợi dây nối khác nhau
-                const colors = ['var(--neon-cyan)', 'var(--neon-purple)', 'var(--neon-pink)', 'var(--neon-green)', 'var(--neon-orange)', 'var(--neon-yellow)'];
-                const strokeColor = colors[(activeCount - 1) % colors.length];
-                path.setAttribute('stroke', strokeColor);
-                path.style.filter = `drop-shadow(0 0 5px ${strokeColor})`;
-
-                svg.appendChild(path);
-            }
-        }
-
-        // Cập nhật số liên kết lên badge
-        const badgeCount = document.getElementById('connections-count');
-        badgeCount.textContent = activeCount;
-
-        const btnSubmit = document.getElementById('btn-submit-programming');
-        if (activeCount === 8) {
-            btnSubmit.style.opacity = '1';
-            btnSubmit.style.pointerEvents = 'auto';
-            btnSubmit.classList.add('pulse-lock');
-            btnSubmit.innerHTML = `Hoàn thành Lập trình & Đi Test thử AI 🚀`;
-        } else {
-            btnSubmit.style.opacity = '0.5';
-            btnSubmit.style.pointerEvents = 'none';
-            btnSubmit.classList.remove('pulse-lock');
-            btnSubmit.innerHTML = `Hãy nối đủ 8 dây để tiến hành`;
-        }
-    },
-
     clearAllConnections() {
-        GameData.connections = {};
+        
         this.updateConnectionLines();
     },
 
     // --- GIAI ĐOẠN 2 - THỬ NGHIỆM AI TỰ HUẤN LUYỆN (TESTING) ---
-    switchToTestingPhase() {
-        // Chuyển hình vẽ SVG phòng bên trong (từ container Giai đoạn 1) sang container Giai đoạn Test
-        this.migrateRoomSVG('inner-room-container-test');
-
-        // Reset lại toàn bộ thiết bị đang chạy về OFF để bắt đầu test thuần khiết
-        for (let dev in GameData.deviceStates) {
-            this.toggleDevice(dev, false);
-        }
-
-        // Tạo danh sách 6 nút bấm lệnh nhanh cho học sinh test tại cột bên phải
-        this.renderTestCommandsGrid();
-
-        // Tạo bảng mô tả quy tắc lập trình tùy biến
-        this.renderCustomRulesTable();
-
-        // Hiển thị màn hình test
-        this.showScreen('testing');
-    },
-
-    migrateRoomSVG(targetContainerId) {
-        const svg = document.querySelector('.inner-room-svg');
-        const targetContainer = document.getElementById(targetContainerId);
-        
-        if (svg && targetContainer) {
-            targetContainer.appendChild(svg);
-        }
-    },
-
-    renderTestCommandsGrid() {
-        const container = document.getElementById('test-quick-commands-container');
-        container.innerHTML = '';
-
-        // Hiển thị các nút nói nhanh từ các câu lập trình kéo dây
-        GameData.leftCards.forEach(card => {
-            const btn = document.createElement('button');
-            btn.className = 'btn-quick-test';
-            btn.id = `btn-test-${card.id}`;
-            btn.innerHTML = `
-                <svg viewBox="0 0 24 24"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm1 15h-2v-6h2v6zm0-8h-2V7h2v2z"/></svg>
-                Nói: "${card.text}"
-            `;
-            
-            btn.addEventListener('click', () => {
-                this.executeCustomAICommand(card.id, card.text);
-            });
-            container.appendChild(btn);
-        });
-
-        // Bổ sung thêm 2 nút nói tắt độc lập để cưỡng chế reset Tivi và Tủ lạnh về ban đầu
-        const extraCommands = [
-            { id: "tv_off", text: "Tắt tivi", devName: "tv" },
-            { id: "fridge_close", text: "Đóng tủ lạnh", devName: "fridge" }
-        ];
-
-        extraCommands.forEach(cmd => {
-            const btn = document.createElement('button');
-            btn.className = 'btn-quick-test';
-            btn.id = `btn-test-${cmd.id}`;
-            btn.innerHTML = `
-                <svg viewBox="0 0 24 24"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm1 15h-2v-6h2v6zm0-8h-2V7h2v2z"/></svg>
-                Nói: "${cmd.text}"
-            `;
-            
-            btn.addEventListener('click', () => {
-                // Hệ thống cưỡng chế reset thiết bị về trạng thái Tắt ban đầu
-                SoundManager.playSuccess();
-                this.toggleDevice(cmd.devName, false);
-                
-                const reply = cmd.devName === 'tv'
-                    ? `🤖 Trợ Lý LUNA: Nhận tín hiệu câu nói "${cmd.text}". Đã tắt tivi treo tường. Đèn LED chỉ thị đã chuyển sang màu đỏ tắt nguồn.`
-                    : `🤖 Trợ Lý LUNA: Nhận tín hiệu câu nói "${cmd.text}". Đã đóng khít tủ lạnh để tiết kiệm điện năng cho bạn.`;
-                
-                document.getElementById('luna-speech-text').innerText = reply;
-            });
-            container.appendChild(btn);
-        });
-
-        // Cập nhật trạng thái kích hoạt của các nút kiểm thử ngay lập tức
-        this.updateTestButtonsActiveState();
-    },
-
-    getDeviceFromActionKey(actionKey) {
-        switch (actionKey) {
-            case 'fan_on': return 'fan';
-            case 'ac_on': return 'ac';
-            case 'light_on': return 'light';
-            case 'fridge_open': return 'fridge';
-            case 'glassdoor_open': return 'glassdoor';
-            case 'vacuum_on': return 'vacuum';
-            case 'tv_on': return 'tv';
-            case 'speaker_on': return 'speaker';
-            default: return '';
-        }
-    },
-
-    updateTestButtonsActiveState() {
-        GameData.leftCards.forEach(card => {
-            const btn = document.getElementById(`btn-test-${card.id}`);
-            if (!btn) return;
-
-            const rightId = GameData.connections[card.id];
-            const rightCard = GameData.rightCards.find(c => c.id === rightId);
-            if (rightCard) {
-                const devName = this.getDeviceFromActionKey(rightCard.actionKey);
-                const isDeviceOn = GameData.deviceStates[devName];
-                if (isDeviceOn) {
-                    btn.classList.add('active');
-                } else {
-                    btn.classList.remove('active');
-                }
-            } else {
-                btn.classList.remove('active');
-            }
-        });
-    },
-
-    renderCustomRulesTable() {
-        const tbody = document.getElementById('custom-rules-table-body');
-        tbody.innerHTML = '';
-
-        for (let leftId in GameData.connections) {
-            const rightId = GameData.connections[leftId];
-            
-            const leftCard = GameData.leftCards.find(c => c.id === leftId);
-            const rightCard = GameData.rightCards.find(c => c.id === rightId);
-
-            if (leftCard && rightCard) {
-                const row = document.createElement('div');
-                row.className = 'rule-item-row';
-                row.innerHTML = `
-                    <span class="rule-item-speech">"${leftCard.text}"</span>
-                    <span class="rule-item-arrow-icon">&gt;&gt;</span>
-                    <span class="rule-item-action">${rightCard.text}</span>
-                `;
-                tbody.appendChild(row);
-            }
-        }
-    },
+    
 
     // THỰC THI CÂU LỆNH SAU KHI ĐƯỢC HUẤN LUYỆN (Chạy dạng trigger bật/tắt song song)
     executeCustomAICommand(leftId, utteranceText) {
@@ -1359,7 +901,7 @@ const App = {
     // --- HÀM TÁI LẬP TRÌNH & ĐẶT LẠI GAME TOÀN DIỆN ---
     resetWholeGame() {
         // Trả hình vẽ SVG phòng về lại container Giai đoạn 1 ban đầu
-        this.migrateRoomSVG('inner-room-container');
+        
 
         // Khôi phục tất cả biến trạng thái về mặc định
         GameData.deviceStates = {
@@ -1405,8 +947,7 @@ const App = {
         const rvc = document.getElementById('room-viewport-container');
         if (rvc) rvc.className = 'room-viewport';
         
-        const trvc = document.getElementById('test-room-viewport-container');
-        if (trvc) trvc.className = 'room-viewport';
+        
         
         // Cập nhật giao diện Dashboard về mặc định
         this.updateDashboardUI();
@@ -1446,5 +987,171 @@ const App = {
         if (action === 'click') {
             SoundManager.playBeep(600, 0.08, 'sine');
         }
+    },
+
+    // --- PHẦN TỰ ĐỘNG HÓA (MÔI TRƯỜNG & ROBOT) ---
+
+    startEnvironmentLoop() {
+        // Cứ 2 phút (120000ms) đảo ngày/đêm một lần
+        const CYCLE_TIME = 120000; 
+
+        GameData.environmentInterval = setInterval(() => {
+            GameData.isDaytime = !GameData.isDaytime;
+            this.updateEnvironmentUI();
+        }, CYCLE_TIME);
+
+        this.updateEnvironmentUI();
+    },
+
+    updateEnvironmentUI() {
+        const timeIcon = document.getElementById('env-time-icon');
+        const timeText = document.getElementById('env-time-text');
+        const tempText = document.getElementById('env-temp-text');
+        
+        
+        
+        
+
+        const dimOverlay = document.getElementById('roomDimOverlay');
+        
+        if (GameData.isDaytime) {
+            // BAN NGÀY
+            if(timeIcon) { timeIcon.textContent = '☀️'; timeText.textContent = 'Ban ngày'; tempText.textContent = '32°C'; }
+                        if(dimOverlay) dimOverlay.style.opacity = "0";
+
+            // Nếu đang bật đèn tự động thì tắt đèn
+            if (GameData.deviceStates.light) {
+                this.toggleDevice('light', false);
+            }
+
+        } else {
+            // BAN ĐÊM
+            if(timeIcon) { timeIcon.textContent = '🌙'; timeText.textContent = 'Ban đêm'; tempText.textContent = '22°C'; }
+                        if(dimOverlay) dimOverlay.style.opacity = "0.65";
+
+            // Tự động bật đèn
+            setTimeout(() => {
+                    if (!GameData.deviceStates.light) {
+                        this.toggleDevice('light', true);
+                    }
+                }, 5000); // 5 giây sau khi chuyển đêm thì bật đèn
+        }
+    },
+
+    setupTrashDragAndDrop() {
+        window.appHandleDragStart = (e, type) => {
+            e.dataTransfer.setData('text/plain', type);
+            e.dataTransfer.effectAllowed = 'copy';
+        };
+
+        const testRoomViewport = document.getElementById('room-viewport-container');
+        if(!testRoomViewport) return;
+
+        testRoomViewport.addEventListener('dragover', (e) => {
+            e.preventDefault();
+            e.dataTransfer.dropEffect = 'copy';
+            testRoomViewport.style.border = "2px dashed #10b981";
+        });
+
+        testRoomViewport.addEventListener('dragleave', (e) => {
+            e.preventDefault();
+            testRoomViewport.style.border = "none";
+        });
+
+        testRoomViewport.addEventListener('drop', (e) => {
+            e.preventDefault();
+            testRoomViewport.style.border = "none";
+            
+            const trashType = e.dataTransfer.getData('text/plain');
+            if(!trashType) return;
+
+            const rect = testRoomViewport.getBoundingClientRect();
+            const x = ((e.clientX - rect.left) / rect.width) * 1000;
+            const y = 350 + Math.random() * 70;
+
+            this.spawnTrash(trashType, x, y);
+        });
+    },
+
+    spawnTrash(type, x, y) {
+        const id = 'trash_' + Date.now();
+        GameData.trashItems.push({ id, type, x, y });
+        this.renderTrash();
+        
+        this.checkAndRunRobotVacuum();
+    },
+
+    renderTrash() {
+        const layer = document.getElementById('trash-layer');
+        if(!layer) return;
+        layer.innerHTML = '';
+        
+        const emojis = {
+            'tissue': '🧻',
+            'plastic_bag': '🛍️',
+            'cup': '🥤',
+            'bottle': '🧴'
+        };
+
+        GameData.trashItems.forEach(item => {
+            const text = document.createElementNS("http://www.w3.org/2000/svg", "text");
+            text.setAttribute("x", item.x);
+            text.setAttribute("y", item.y);
+            text.setAttribute("font-size", "24");
+            text.setAttribute("text-anchor", "middle");
+            text.setAttribute("id", item.id);
+            text.textContent = emojis[item.type] || '🗑️';
+            layer.appendChild(text);
+        });
+    },
+
+    checkAndRunRobotVacuum() {
+        if (GameData.robotCleaning || GameData.trashItems.length === 0) return;
+        
+        if (!GameData.deviceStates.vacuum) {
+            this.toggleDevice('vacuum', true);
+        }
+
+        this.processNextTrashItem();
+    },
+
+    processNextTrashItem() {
+        if (GameData.trashItems.length === 0) {
+            setTimeout(() => {
+                const robotEl = document.getElementById('device-robot_vacuum');
+                if(robotEl) {
+                    robotEl.style.transition = "transform 2s ease-in-out";
+                    robotEl.style.transform = "translate(0px, 0px)";
+                }
+                if (GameData.deviceStates.vacuum) {
+                    this.toggleDevice('vacuum', false);
+                }
+                GameData.robotCleaning = false;
+            }, 5000);
+            return;
+        }
+
+        GameData.robotCleaning = true;
+        const targetTrash = GameData.trashItems[0];
+        GameData.robotTarget = targetTrash.id;
+
+        const robotEl = document.getElementById('device-robot_vacuum');
+        if (!robotEl) return;
+
+        const dx = targetTrash.x - 200;
+        const dy = targetTrash.y - 380;
+
+        robotEl.style.transition = "transform 1.5s ease-in-out";
+        robotEl.style.transform = `translate(${dx}px, ${dy}px)`;
+
+        setTimeout(() => {
+            GameData.trashItems.shift();
+            this.renderTrash();
+            this.processNextTrashItem();
+        }, 1600);
     }
 };
+
+document.addEventListener('DOMContentLoaded', () => {
+    App.init();
+});
