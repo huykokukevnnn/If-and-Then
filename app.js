@@ -1042,7 +1042,7 @@ const App = {
 
             const rect = testRoomViewport.getBoundingClientRect();
             const x = ((e.clientX - rect.left) / rect.width) * 1000;
-            const y = 350 + Math.random() * 70;
+            const y = 385;
 
             this.spawnTrash(trashType, x, y);
         });
