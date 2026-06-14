@@ -1081,6 +1081,13 @@ const App = {
     },
 
     checkAndRunRobotVacuum() {
+        if (GameData.robotReturnTimeout) {
+            clearTimeout(GameData.robotReturnTimeout);
+            GameData.robotReturnTimeout = null;
+            this.processNextTrashItem();
+            return;
+        }
+        
         if (GameData.robotCleaning || GameData.trashItems.length === 0) return;
         
         if (!GameData.deviceStates.vacuum) {
@@ -1092,16 +1099,25 @@ const App = {
 
     processNextTrashItem() {
         if (GameData.trashItems.length === 0) {
-            setTimeout(() => {
+            GameData.robotReturnTimeout = setTimeout(() => {
                 const robotEl = document.getElementById('device-vacuum');
                 if(robotEl) {
-                    robotEl.style.transition = "transform 3s ease-in-out";
+                    // Calculate distance from current pos to home
+                    const currentDx = GameData.robotCurrentDx || 0;
+                    const currentDy = GameData.robotCurrentDy || 0;
+                    const dist = Math.hypot(0 - currentDx, 0 - currentDy);
+                    const duration = Math.max(1, dist / 200); // 200 units per second
+
+                    robotEl.style.transition = `transform ${duration}s ease-in-out`;
                     robotEl.style.transform = "translate(0px, 0px)";
+                    GameData.robotCurrentDx = 0;
+                    GameData.robotCurrentDy = 0;
                 }
                 if (GameData.deviceStates.vacuum) {
                     this.toggleDevice('vacuum', false);
                 }
                 GameData.robotCleaning = false;
+                GameData.robotReturnTimeout = null;
             }, 5000);
             return;
         }
@@ -1115,15 +1131,25 @@ const App = {
 
         const dx = targetTrash.x - 200;
         const dy = targetTrash.y - 380;
+        
+        const currentDx = GameData.robotCurrentDx || 0;
+        const currentDy = GameData.robotCurrentDy || 0;
+        
+        // Calculate dynamic duration based on distance
+        const dist = Math.hypot(dx - currentDx, dy - currentDy);
+        const duration = Math.max(0.5, dist / 200); // 200 units per second
 
-        robotEl.style.transition = "transform 3s ease-in-out";
+        GameData.robotCurrentDx = dx;
+        GameData.robotCurrentDy = dy;
+
+        robotEl.style.transition = `transform ${duration}s ease-in-out`;
         robotEl.style.transform = `translate(${dx}px, ${dy}px)`;
 
         setTimeout(() => {
             GameData.trashItems.shift();
             this.renderTrash();
             this.processNextTrashItem();
-        }, 3000);
+        }, duration * 1000);
     }
 };
 
