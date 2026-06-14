@@ -243,7 +243,6 @@ header {
 main {
     flex: 1;
     width: 100%;
-    max-width: 1350px;
     margin: 0 auto;
     padding: 1.5rem;
     position: relative;
