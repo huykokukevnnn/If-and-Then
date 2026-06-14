@@ -1999,3 +1999,35 @@ main {
     }
 }
 
+
+/* Styles for new help buttons */
+.help-btn-group {
+    display: flex;
+    gap: 8px;
+    margin-bottom: 6px;
+}
+.btn-help-cmd {
+    background: rgba(59, 130, 246, 0.1);
+    color: var(--neon-blue);
+    border: 1px solid rgba(59, 130, 246, 0.3);
+    padding: 6px 12px;
+    border-radius: 6px;
+    font-size: 0.9rem;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.2s;
+    font-family: inherit;
+}
+.btn-help-cmd:hover {
+    background: rgba(59, 130, 246, 0.2);
+    transform: translateY(-1px);
+    border-color: var(--neon-blue);
+}
+.help-command-item.context-item {
+    cursor: default;
+}
+.help-command-item.context-item:hover {
+    background: rgba(255,255,255,0.02);
+    border-color: rgba(255,255,255,0.05);
+    transform: none;
+}
