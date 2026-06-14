@@ -173,9 +173,7 @@ const GameData = {
 };
 
 // --- 3. KHỞI TẠO VÀ BẮT ĐẦU APP ---
-document.addEventListener('DOMContentLoaded', () => {
-    App.init();
-});
+
 
 const App = {
     currentScreen: 'phase1',
@@ -329,11 +327,7 @@ const App = {
                 
                 let micActive = false;
 
-                recognition.onstart = () => {
-                    micBtn.classList.add('recording');
-                    input.placeholder = "LUNA đang luôn nghe giọng của bạn...";
-                    SoundManager.playBeep(800, 0.12, 'sine');
-                };
+                recognition.onstart = () => { micBtn.classList.add('recording'); input.placeholder = "LUNA đang luôn nghe giọng của bạn..."; };
 
                 recognition.onresult = (event) => {
                     const speechResult = event.results[event.results.length - 1][0].transcript;
@@ -376,6 +370,7 @@ const App = {
                 micBtn.addEventListener('click', () => {
                     micActive = !micActive;
                     if (micActive) {
+                        SoundManager.playBeep(800, 0.12, 'sine');
                         recognition.start();
                     } else {
                         recognition.stop();
@@ -486,7 +481,7 @@ const App = {
         let explanation = "";
 
         // 1. Thiết bị Quạt (fan) - Tắt trước, Bật sau
-        if (this.matchKeywords(text, ["tắt quạt", "tat quat", "dừng quạt", "ngừng quạt"])) {
+        if (this.matchKeywords(text, ["tắt quạt", "tat quat", "dừng quạt", "ngừng quạt", "đóng quạt", "dong quat"])) {
             actions.push({ devName: 'fan', state: false });
             explanation = "Đã tắt quạt đứng. Cánh quạt đã ngừng quay.";
             triggered = true;
@@ -497,7 +492,7 @@ const App = {
         }
         
         // 2. Thiết bị Đèn LED áp tường (light) - Tắt trước, Bật sau
-        else if (this.matchKeywords(text, ["tắt đèn", "tat den"])) {
+        else if (this.matchKeywords(text, ["tắt đèn", "tat den", "đóng đèn", "dong den"])) {
             actions.push({ devName: 'light', state: false });
             explanation = "Đã tắt đèn LED áp tường. Căn phòng trở lại bình thường.";
             triggered = true;
@@ -508,7 +503,7 @@ const App = {
         }
 
         // 3. Thiết bị Robot hút bụi (vacuum) - Tắt trước, Bật sau
-        else if (this.matchKeywords(text, ["dừng hút", "dung hut", "tắt robot", "tat robot", "dừng robot", "tắt máy hút bụi", "tat may hut bui"])) {
+        else if (this.matchKeywords(text, ["dừng hút", "dung hut", "tắt robot", "tat robot", "dừng robot", "tắt máy hút bụi", "tat may hut bui", "đóng robot", "dong robot", "đóng máy hút bụi", "dong may hut bui"])) {
             actions.push({ devName: 'vacuum', state: false });
             explanation = "Robot hút bụi đã tạm dừng công việc dọn dẹp.";
             triggered = true;
@@ -516,7 +511,7 @@ const App = {
             actions.push({ devName: 'vacuum', state: true });
             explanation = "🚨 Phân tích AI: Ngữ cảnh 'Sàn dơ' -> Đã bật Robot hút bụi dọn dẹp sàn nhà dơ bẩn sạch sẽ!";
             triggered = true;
-        } else if (this.matchKeywords(text, ["hút bụi", "hut bui", "quét nhà", "quet nha", "dọn dẹp", "don dep", "kích hoạt robot"])) {
+        } else if (this.matchKeywords(text, ["hút bụi", "hut bui", "quét nhà", "quet nha", "dọn dẹp", "don dep", "kích hoạt robot", "bật robot", "bat robot", "mở robot", "mo robot", "bật máy hút bụi", "bat may hut bui", "mở máy hút bụi", "mo may hut bui"])) {
             actions.push({ devName: 'vacuum', state: true });
             explanation = "Robot hút bụi thông minh đang tự trượt đi dọn sàn nhà cho sạch sẽ!";
             triggered = true;
@@ -556,7 +551,7 @@ const App = {
         }
 
         // 7. Thiết bị Tivi treo tường (tv) - Tắt trước, Bật sau
-        else if (this.matchKeywords(text, ["tắt tivi", "tat tivi", "tắt tv", "tat tv"])) {
+        else if (this.matchKeywords(text, ["tắt tivi", "tat tivi", "tắt tv", "tat tv", "đóng tivi", "dong tivi", "đóng tv", "dong tv"])) {
             actions.push({ devName: 'tv', state: false });
             explanation = "Đã tắt tivi treo tường. Đèn LED chỉ thị đã chuyển sang màu đỏ tắt nguồn.";
             triggered = true;
@@ -707,10 +702,7 @@ const App = {
                     // Tự động đóng tủ lạnh
                     this.toggleDevice('fridge', false);
                     
-                    // Phát tiếng cảnh báo động cơ (còi báo động triple-beep sawtooth)
-                    SoundManager.playBeep(880, 0.12, 'sawtooth');
-                    setTimeout(() => SoundManager.playBeep(880, 0.12, 'sawtooth'), 180);
-                    setTimeout(() => SoundManager.playBeep(880, 0.12, 'sawtooth'), 360);
+                    
 
                     // LUNA đưa ra tin nhắn cảnh báo
                     const alertMsg = "Trợ Lý LUNA: Cảnh báo 🚨! Cửa tủ lạnh đã mở quá 5 giây. Tôi đã tự động đóng khít tủ lạnh để tiết kiệm điện năng.";
@@ -1100,7 +1092,7 @@ const App = {
     processNextTrashItem() {
         if (GameData.trashItems.length === 0) {
             setTimeout(() => {
-                const robotEl = document.getElementById('device-robot_vacuum');
+                const robotEl = document.getElementById('device-vacuum');
                 if(robotEl) {
                     robotEl.style.transition = "transform 2s ease-in-out";
                     robotEl.style.transform = "translate(0px, 0px)";
@@ -1117,7 +1109,7 @@ const App = {
         const targetTrash = GameData.trashItems[0];
         GameData.robotTarget = targetTrash.id;
 
-        const robotEl = document.getElementById('device-robot_vacuum');
+        const robotEl = document.getElementById('device-vacuum');
         if (!robotEl) return;
 
         const dx = targetTrash.x - 200;
@@ -1133,6 +1125,7 @@ const App = {
         }, 1600);
     }
 };
+
 
 document.addEventListener('DOMContentLoaded', () => {
     App.init();
