@@ -178,7 +178,7 @@ document.addEventListener('DOMContentLoaded', () => {
 });
 
 const App = {
-    currentScreen: 'intro',
+    currentScreen: 'phase1',
     activeDragDot: null,
     dragStartCoords: null,
     tempCable: null,
@@ -234,19 +234,6 @@ const App = {
     },
 
     bindGlobalEvents() {
-        // Sự kiện gõ cửa vào nhà ở màn hình Intro
-        document.getElementById('svg-front-door').addEventListener('click', () => {
-            SoundManager.playChime();
-            
-            // Thêm hiệu ứng flash cửa
-            const door = document.getElementById('svg-front-door');
-            door.style.filter = "drop-shadow(0 0 30px #ffffff)";
-            
-            setTimeout(() => {
-                door.style.filter = "";
-                this.showScreen('phase1');
-            }, 600);
-        });
 
         // Bấm nút chơi lại từ đầu
         document.getElementById('btn-restart-app').addEventListener('click', () => {
@@ -270,11 +257,6 @@ const App = {
                 soundIcon.innerHTML = `<path d="M3 9v6h4l5 5V4L7 9H3zm13.5 3c0-1.77-1.02-3.29-2.5-4.03v8.05c1.48-.73 2.5-2.25 2.5-4.02zM14 3.23v2.06c2.89.86 5 3.54 5 6.71s-2.11 5.85-5 6.71v2.06c4.01-.91 7-4.49 7-8.77s-2.99-7.86-7-8.77z"/>`;
                 SoundManager.playBeep(700, 0.1);
             }
-        });
-
-        // Bấm nút chuyển giai đoạn 2
-        document.getElementById('btn-to-phase-2').addEventListener('click', () => {
-            this.showScreen('phase2');
         });
 
         // Đóng mở Modal Gợi Ý Câu Lệnh
@@ -980,7 +962,7 @@ const App = {
         this.updateConnectionLines();
 
         // Chuyển màn hình về Intro
-        this.showScreen('intro');
+        this.showScreen('phase1');
     },
 
     playActionSound(action) {
