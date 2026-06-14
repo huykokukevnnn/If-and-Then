@@ -659,6 +659,7 @@ const App = {
 
         if (devName === 'vacuum') {
             GameData.dashboardMetrics.air = targetState ? "Tuyệt vời (Sạch)" : "Ngột ngạt";
+            if (targetState) this.checkAndRunRobotVacuum();
         }
 
         if (devName === 'speaker') {
@@ -1094,7 +1095,7 @@ const App = {
             setTimeout(() => {
                 const robotEl = document.getElementById('device-vacuum');
                 if(robotEl) {
-                    robotEl.style.transition = "transform 2s ease-in-out";
+                    robotEl.style.transition = "transform 3s ease-in-out";
                     robotEl.style.transform = "translate(0px, 0px)";
                 }
                 if (GameData.deviceStates.vacuum) {
@@ -1115,14 +1116,14 @@ const App = {
         const dx = targetTrash.x - 200;
         const dy = targetTrash.y - 380;
 
-        robotEl.style.transition = "transform 1.5s ease-in-out";
+        robotEl.style.transition = "transform 3s ease-in-out";
         robotEl.style.transform = `translate(${dx}px, ${dy}px)`;
 
         setTimeout(() => {
             GameData.trashItems.shift();
             this.renderTrash();
             this.processNextTrashItem();
-        }, 1600);
+        }, 3100);
     }
 };
 
