@@ -1113,13 +1113,8 @@ const App = {
         const robotEl = document.getElementById('device-vacuum');
         if (!robotEl) return;
 
-        const testRoomViewport = document.getElementById('room-viewport-container') || document.querySelector('.inner-room-container');
-        const rect = testRoomViewport.getBoundingClientRect();
-        const scaleX = rect.width / 1000;
-        const scaleY = rect.height / 450;
-
-        const dx = (targetTrash.x - 200) * scaleX;
-        const dy = (targetTrash.y - 380) * scaleY;
+        const dx = targetTrash.x - 200;
+        const dy = targetTrash.y - 380;
 
         robotEl.style.transition = "transform 3s ease-in-out";
         robotEl.style.transform = `translate(${dx}px, ${dy}px)`;
@@ -1128,7 +1123,7 @@ const App = {
             GameData.trashItems.shift();
             this.renderTrash();
             this.processNextTrashItem();
-        }, 3100);
+        }, 3000);
     }
 };
 
