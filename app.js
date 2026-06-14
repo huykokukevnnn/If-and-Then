@@ -276,9 +276,9 @@ const App = {
         });
 
         // Bấm vào gợi ý lệnh để chèn tự động vào input chat
-        document.querySelectorAll('.help-command-item').forEach(item => {
-            item.addEventListener('click', () => {
-                const cmd = item.getAttribute('data-cmd');
+        document.querySelectorAll('.btn-help-cmd').forEach(btn => {
+            btn.addEventListener('click', () => {
+                const cmd = btn.getAttribute('data-cmd');
                 document.getElementById('chat-input-field').value = cmd;
                 document.getElementById('modal-help-commands').classList.remove('active');
                 document.getElementById('chat-input-field').focus();
